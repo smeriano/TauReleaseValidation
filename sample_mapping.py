@@ -6,10 +6,11 @@
 # }
 runtype_to_sample = {
     'QCD'  : 'RelValQCD_FlatPt_15_3000HS_13',
-    'TTbar': 'RelValTTbar_14',
+    'TTbar': 'RelValTTbar_14TeV',
     'ZEE'  : 'RelValZEE_14',
     'ZMM'  : 'RelValZMM_14', 
-    'ZTT'  : 'RelValZTT_14', 
+    'ZTT'  : 'RelValZTT_14',
+    'TenTaus': 'RelValTenTau_15_500',
     'DataTau' : 'Tau', 
     'DataMu'  : 'SingleMuon', 
     'DataEl'  : 'EGamma', 

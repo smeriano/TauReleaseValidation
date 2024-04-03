@@ -218,8 +218,8 @@ def hoverlay(hists, xtitle, ytitle,
     pad2.cd()
     for ii, hist in enumerate(hratios):
         hist.GetYaxis().SetTitle('ratio')
-        hist.SetMinimum(0.5)
-        hist.SetMaximum(1.5)
+        hist.SetMinimum(0.6)
+        hist.SetMaximum(1.4)
         hist.GetYaxis().SetTitleOffset(0.33)
         hist.GetYaxis().SetTitleSize(0.193)
         hist.GetYaxis().SetLabelSize(0.175)

@@ -100,8 +100,8 @@ def getFilesFromDAS(release, runtype, globalTag, miniaod, manual_query="", exact
         print ("First attempt unsuccessful. Generalizing query. May take a while.... query:", query)
         result = subprocess.check_output("dasgoclient --query='" + query + "'", shell=True).decode("utf-8")
 
-    files = ["root://cms-xrd-global.cern.ch/" + s.strip() for s in result.splitlines()]
     #files = ["root://cms-xrd-global.cern.ch/" + s.strip() for s in result.splitlines()]
+    files = ["root://xrootd-cms.infn.it/" + s.strip() for s in result.splitlines()]
 
     print ("files:", files)
     return files

@@ -193,6 +193,7 @@ def var_plots(d_sample, var_name, hdict):
             warnings.warn(
                 var_name + ' is missing in input file ' + rdict['file'].GetName())
             return
+        #hdict['nbin']=13
         hist = TH1F('h_' + var_name + '_' + rel, 'h_' + var_name +
                     '_' + rel, hdict['nbin'], hdict['min'], hdict['max'])
 
@@ -244,7 +245,7 @@ if __name__ == '__main__':
     ptPlotsBinning = array('d', [20, 200]) if args.onebin else array(
         'd', [20, 30, 40, 50, 60, 70, 80, 100, 150, 200])
     etaPlotsBinning = array('d', [-2.4, 2.4]) if args.onebin else array(
-        'd', [round(-2.4 + i * 0.4, 1) for i in range(13)])
+        'd', [round(-2.4 + i * 0.4, 1) for i in range(13)]) #original: 13 bins
     reco_cut = 'tau_pt > 20 && abs(tau_eta) < 2.3'
     gen_cut = 'tau_genpt > 20 && abs(tau_geneta) < 2.3'
     # loose_id = 'tau_decayModeFinding > 0.5 && tau_byLooseCombinedIsolationDeltaBetaCorr3Hits > 0.5'
