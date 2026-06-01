@@ -52,61 +52,57 @@ def word_finder(expr):
     return [w for w in words if not is_number(w) and w not in ['min', 'max']]
 
 
-def efficiency_plots(d_sample, var_name, hdict):
-    graphs = []
-    graphs_eta = []
+def make_efficiency_plots(d_sample, var_name, hdict):
+    graphs, graphs_eta = [], []
 
     for rel, rdict in sorted(d_sample.items(), key=lambda item: item[1]["index"]):
         tree = rdict['tree']
         if 'leaves' not in rdict:
             rdict['leaves'] = [leaf.GetName() for leaf in tree.GetListOfLeaves()]
+
         used_vars = word_finder(hdict['var'])
         if not set(used_vars).issubset(rdict['leaves']):
             with open('missing_leaves.txt', 'a+') as f:
-              print (var_name + ' is missing in input file ' + rdict['file'].GetName(), file=f)
-            warnings.warn(
-                var_name + ' is missing in input file ' + rdict['file'].GetName())
+                print(f"{var_name} is missing in input file {rdict['file'].GetName()}", file=f)
+            warnings.warn(f"{var_name} is missing in input file {rdict['file'].GetName()}")
             return
-        num_sel = reco_cut
-        den_sel = '1'
+
+        num_sel, den_sel = reco_cut, '1'
         discriminators = {"loose_id": den_sel}
         if 'against' in var_name:
-            den_sel = gen_cut + ' && ' + loose_id
+            den_sel = f"{gen_cut} && {loose_id}"
 
         for mvaIDname, sel in discriminators.items():
-            graphs.append(makeEffPlotsVars(tree=tree,
-                                           varx='tau_genpt',
-                                           numeratorAddSelection=num_sel +
-                                           '&&' + hdict['var'],
-                                           baseSelection=sel,
-                                           binning=ptPlotsBinning,
-                                           xtitle=options_dict[runtype].xlabel,
-                                           header=rel + mvaIDname, addon=rel + mvaIDname,
-                                           marker=rdict['marker'],
-                                           col=rdict['col']))
+            graphs.append(makeEffPlotsVars(
+                tree=tree,
+                varx='tau_genpt',
+                numeratorAddSelection=f"{num_sel}&&{hdict['var']}",
+                baseSelection=sel,
+                binning=ptPlotsBinning,
+                xtitle=options_dict[runtype].xlabel,
+                header=f"{rel}{mvaIDname}",
+                addon=f"{rel}{mvaIDname}",
+                marker=rdict['marker'],
+                col=rdict['col']
+            ))
 
-            graphs_eta.append(makeEffPlotsVars(tree=tree,
-                                               varx='tau_geneta',
-                                               numeratorAddSelection=num_sel +
-                                               '&&' + hdict['var'],
-                                               baseSelection=sel,
-                                               binning=etaPlotsBinning,
-                                               xtitle=options_dict[runtype].xlabel_eta,
-                                               header=rel + mvaIDname, addon=rel + mvaIDname,
-                                               marker=rdict['marker'],
-                                               col=rdict['col']))
+            graphs_eta.append(makeEffPlotsVars(
+                tree=tree,
+                varx='tau_geneta',
+                numeratorAddSelection=f"{num_sel}&&{hdict['var']}",
+                baseSelection=sel,
+                binning=etaPlotsBinning,
+                xtitle=options_dict[runtype].xlabel_eta,
+                header=f"{rel}{mvaIDname}",
+                addon=f"{rel}{mvaIDname}",
+                marker=rdict['marker'],
+                col=rdict['col']
+            ))
 
-    overlay(graphs=graphs,
-            header=var_name,
-            addon=hdict['title'],
-            runtype=runtype,
-            tlabel=options_dict[runtype].tlabel)
+    overlay(graphs=graphs, header=var_name, addon=hdict['title'], runtype=runtype, tlabel=options_dict[runtype].tlabel)
+    overlay(graphs=graphs_eta, header=f"{var_name}_eta", addon=f"{hdict['title']}_eta", runtype=runtype, tlabel=options_dict[runtype].tlabel)
 
-    overlay(graphs=graphs_eta,
-            header=var_name + '_eta',
-            addon=hdict['title'] + '_eta',
-            runtype=runtype,
-            tlabel=options_dict[runtype].tlabel)
+
 
 
 def eff_plots_single(d_sample, vars_to_compare, var_dict):
@@ -184,7 +180,6 @@ def var_plots(d_sample, var_name, hdict):
     hists = []
 
     for rel, rdict in sorted(d_sample.items(), key=lambda item: item[1]["index"]):
-
         tree = rdict['tree']
         if 'leaves' not in rdict:
             rdict['leaves'] = [leaf.GetName() for leaf in tree.GetListOfLeaves()]
@@ -193,15 +188,13 @@ def var_plots(d_sample, var_name, hdict):
             warnings.warn(
                 var_name + ' is missing in input file ' + rdict['file'].GetName())
             return
-        #hdict['nbin']=13
-        hist = TH1F('h_' + var_name + '_' + rel, 'h_' + var_name +
-                    '_' + rel, hdict['nbin'], hdict['min'], hdict['max'])
 
+        # Standard histogram
+        hist = TH1F('h_' + var_name + '_' + rel, 'h_' + var_name + '_' + rel, hdict['nbin'], hdict['min'], hdict['max'])
         hist.GetYaxis().SetNdivisions(507)
         hist.SetLineColor(rdict['col'])
         hist.SetLineWidth(rdict['width'])
         hist.SetMinimum(0)
-        hist.SetName(rel)
         hist.Sumw2()
         hist.GetXaxis().SetTitle(hdict['title'])
 
@@ -211,7 +204,6 @@ def var_plots(d_sample, var_name, hdict):
             hist.Scale(1. / hist.Integral(0, hist.GetNbinsX() + 1))
 
         hists.append(hist)
-
     hoverlay(hists=hists,
              xtitle=hdict['title'],
              ytitle='a.u.',
@@ -221,61 +213,55 @@ def var_plots(d_sample, var_name, hdict):
              xlabel=options_dict[runtype].xlabel,
              xlabel_eta=options_dict[runtype].xlabel_eta)
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     addArguments(parser, produce=False, compare=True)
     args = parser.parse_args()
+
     part = args.part
     totalparts = args.totalparts
-    inputfiles = args.inputfiles
-
+    inputfiles = None if not args.inputfiles else args.inputfiles
     runtype = args.runtype
     releases = args.releases
     globaltags = args.globalTags
-    # The following three are for Olena's variable comparison
     variables = args.variables
     varyLooseId = args.varyLooseId
     colors = args.colors
 
-    sampledict = fillSampledic(
-        globaltags, releases, runtype, inputfiles)
+    sampledict = fillSampledic(globaltags, releases, runtype, inputfiles)
 
+    ptPlotsBinning = array('d', [20, 200]) if args.onebin else array('d', [20, 30, 40, 50, 60, 70, 80, 100, 150, 200])
+    etaPlotsBinning = array('d', [-2.4, 2.4]) if args.onebin else array('d', [round(-2.4 + i * 0.4, 1) for i in range(13)])
 
-    ptPlotsBinning = array('d', [20, 200]) if args.onebin else array(
-        'd', [20, 30, 40, 50, 60, 70, 80, 100, 150, 200])
-    etaPlotsBinning = array('d', [-2.4, 2.4]) if args.onebin else array(
-        'd', [round(-2.4 + i * 0.4, 1) for i in range(13)]) #original: 13 bins
     reco_cut = 'tau_pt > 20 && abs(tau_eta) < 2.3'
     gen_cut = 'tau_genpt > 20 && abs(tau_geneta) < 2.3'
-    # loose_id = 'tau_decayModeFinding > 0.5 && tau_byLooseCombinedIsolationDeltaBetaCorr3Hits > 0.5'
     loose_id = 'tau_decayModeFinding > 0.5 && tau_byLooseIsolationMVArun2v1DBoldDMwLT > 0.5'
-    
-    if part in [0, 1]:
-        print ("First part of plots")
-        for h_name, h_dict in vardict.items():
-            efficiency_plots(sampledict, h_name, h_dict)
 
-        # Add Olena's per-release/GT plots into this script
+    if part in [0, 1]:
+        print("First part of plots")
+        for h_name, h_dict in vardict.items():
+            make_efficiency_plots(sampledict, h_name, h_dict)
+
         if variables and len(releases) == 1 and len(globaltags) == 1:
             eff_plots_single(sampledict, variables, vardict)
 
-        print ("End first part of plots")
+        print("End first part of plots")
+
     if part == 1:
         exit()
     elif part != 0:
-        print (str(part)+". part of plots")
+        print(f"{part}. part of plots")
 
-    print ("Total plots that should be made: "+str(len(hvardict.items())))
+    print(f"Total plots that should be made: {len(hvardict.items())}")
     for index, (h_name, h_dict) in enumerate(hvardict.items()):
         if part != 0:
-            if index >= float(len(hvardict.items())) / (totalparts-1) * (part-1): break
-            if index < float(len(hvardict.items())) / (totalparts-1) * (part-2): continue
-                
-        if runtype not in ['ZpTT','ZTT', 'TTbarTau', 'TenTaus'] and h_name.find('pt_resolution') != -1:
+            if index >= float(len(hvardict.items())) / (totalparts - 1) * (part - 1): break
+            if index < float(len(hvardict.items())) / (totalparts - 1) * (part - 2): continue
+
+        if runtype not in ['ZpTT', 'ZTT', 'TTbarTau', 'TenTaus'] and 'pt_resolution' in h_name:
             continue
 
-        print ("Doing",index+1, ":", h_name)
+        print(f"Doing {index + 1} : {h_name}")
         var_plots(sampledict, h_name, h_dict)
 
-    print ("Finished")
+    print("Finished")

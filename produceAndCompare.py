@@ -45,11 +45,11 @@ if __name__ == '__main__':
 
     scriptPath = os.path.realpath(__file__)[0:os.path.realpath(__file__).rfind('/') + 1]
 
-    dd = '--dryRun' if dryRun else ''
+    dd = ' --dryRun' if dryRun else ''
     if debug:
         dd += ' --debug'
 
-    if skipProduceTauValTree==False :
+    if not skipProduceTauValTree:
         for i, relval in enumerate(relVals):
             inputfile = ' --inputfile ' + inputfiles[i] if len(inputfiles) > 0 else ''
 
@@ -64,10 +64,10 @@ if __name__ == '__main__':
                 ' --tauCollection ' + tauCollection + mvaidstr + dd
             + (len(outputFileName) > 0) * (' --outputFileName ' + outputFileName)
 
-        print ('====================')
-        print (command)
-        print ('====================')
-        os.system(command)
+            print ('====================')
+            print (command)
+            print ('====================')
+            os.system(command)
 
     onebin = ' -b' if onebin else ''
     globalTagsstr = ' '.join(globalTags)

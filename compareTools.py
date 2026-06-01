@@ -1,6 +1,7 @@
 import os
 import errno
 import pprint
+import uuid
 
 from ROOT import TH1F, TFile, TCanvas, TPad, TLegend, \
     TGraphAsymmErrors, TLatex, TMath
@@ -52,8 +53,13 @@ def overlay(graphs, header, addon, runtype,
         "newDMwo2p": "newDMwithout2prong",
     }
 
-    ymin = min(TMath.MinElement(g.GetN(), g.GetY()) for g in graphs)
-    ymax = max(TMath.MaxElement(g.GetN(), g.GetY()) for g in graphs)
+    y_values = []
+    for graph in graphs:
+        y_values.extend(graph.GetPointY(i) for i in range(graph.GetN()))
+    if not y_values:
+        return
+    ymin = min(y_values)
+    ymax = max(y_values)
 
     canvas = TCanvas()
     leg = TLegend(0.2, 0.7, 0.5, 0.9)
@@ -304,17 +310,21 @@ def makeEffPlotsVars(tree,
                      binning,
                      xtitle='', header='', addon='', marker=20, col=1):
 
-    _denomHist_ = TH1F('h_effp_' + addon,
+    unique_id = addon + '_' + uuid.uuid4().hex
+    denom_name = 'h_effp_' + unique_id
+    nom_name = 'ah_effp_' + unique_id
+
+    _denomHist_ = TH1F(denom_name,
                        'h_effp' + addon,
                        len(binning) - 1,
                        binning)
-    _nominatorHist_ = TH1F('ah_effp_' + addon, 'ah_effp' + addon,
+    _nominatorHist_ = TH1F(nom_name, 'ah_effp' + addon,
                            len(binning) - 1,
                            binning)
 
-    tree.Draw(varx + ' >> ' + _denomHist_.GetName(), baseSelection)
-    tree.Draw(varx + ' >> ' + _nominatorHist_.GetName(),
-              baseSelection + ' && ' + numeratorAddSelection)
+    tree.Draw(varx + ' >> ' + denom_name, baseSelection, 'goff')
+    tree.Draw(varx + ' >> ' + nom_name,
+              baseSelection + ' && ' + numeratorAddSelection, 'goff')
 
     g_eff = TGraphAsymmErrors()
     g_eff.Divide(_nominatorHist_, _denomHist_, "cl=0.683 b(1,1) mode")
