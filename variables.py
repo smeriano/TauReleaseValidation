@@ -54,15 +54,15 @@ vardict = {
     #'byMediumIsolationMVArun2v1DBnewDMwLT_oldDM': {'var': 'tau_byMediumIsolationMVArun2v1DBnewDMwLT > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2v1DBnewDMwLT_oldDM'},
     #'byTightIsolationMVArun2v1DBnewDMwLT_oldDM':  {'var': 'tau_byTightIsolationMVArun2v1DBnewDMwLT  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2v1DBnewDMwLT_oldDM'},
 
-    'byLooseDeepTau2017v2p1VSjet_oldDM':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_oldDM'},
-    'byMediumDeepTau2017v2p1VSjet_oldDM':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_oldDM'},
-    'byTightDeepTau2017v2p1VSjet_oldDM':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_oldDM'},
-    'byLooseDeepTau2017v2p1VSe_oldDM':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_oldDM'},
-    'byMediumDeepTau2017v2p1VSe_oldDM':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_oldDM'},
-    'byTightDeepTau2017v2p1VSe_oldDM':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_oldDM'},
-    'byLooseDeepTau2017v2p1VSmu_oldDM':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_oldDM'},
-    'byMediumDeepTau2017v2p1VSmu_oldDM':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_oldDM'},
-    'byTightDeepTau2017v2p1VSmu_oldDM':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_oldDM'},
+    'byLooseDeepTau2018v2p5VSjet_oldDM':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_oldDM'},
+    'byMediumDeepTau2018v2p5VSjet_oldDM':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_oldDM'},
+    'byTightDeepTau2018v2p5VSjet_oldDM':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_oldDM'},
+    'byLooseDeepTau2018v2p5VSe_oldDM':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_oldDM'},
+    'byMediumDeepTau2018v2p5VSe_oldDM':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_oldDM'},
+    'byTightDeepTau2018v2p5VSe_oldDM':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_oldDM'},
+    'byLooseDeepTau2018v2p5VSmu_oldDM':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_oldDM'},
+    'byMediumDeepTau2018v2p5VSmu_oldDM':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_oldDM'},
+    'byTightDeepTau2018v2p5VSmu_oldDM':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_oldDM'},
 
     # PW
     #'byLooseIsolationMVArun2v1PWoldDMwLT':  {'var': 'tau_byLooseIsolationMVArun2v1PWoldDMwLT  > 0.5 && tau_decayModeFinding > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseIsolationMVArun2v1PWoldDMwLT'},
@@ -108,15 +108,15 @@ vardict = {
     #'byMediumIsolationMVArun2v1DBnewDMwLT_newDM': {'var': 'tau_byMediumIsolationMVArun2v1DBnewDMwLT > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2v1DBnewDMwLT_newDM'},
     #'byTightIsolationMVArun2v1DBnewDMwLT_newDM':  {'var': 'tau_byTightIsolationMVArun2v1DBnewDMwLT  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2v1DBnewDMwLT_newDM'},
 
-    'byLooseDeepTau2017v2p1VSjet_newDM':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_newDM'},
-    'byMediumDeepTau2017v2p1VSjet_newDM':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_newDM'},
-    'byTightDeepTau2017v2p1VSjet_newDM':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_newDM'},
-    'byLooseDeepTau2017v2p1VSe_newDM':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_newDM'},
-    'byMediumDeepTau2017v2p1VSe_newDM':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_newDM'},
-    'byTightDeepTau2017v2p1VSe_newDM':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_newDM'},
-    'byLooseDeepTau2017v2p1VSmu_newDM':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_newDM'},
-    'byMediumDeepTau2017v2p1VSmu_newDM':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_newDM'},
-    'byTightDeepTau2017v2p1VSmu_newDM':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_newDM'},
+    'byLooseDeepTau2018v2p5VSjet_newDM':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_newDM'},
+    'byMediumDeepTau2018v2p5VSjet_newDM':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_newDM'},
+    'byTightDeepTau2018v2p5VSjet_newDM':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_newDM'},
+    'byLooseDeepTau2018v2p5VSe_newDM':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_newDM'},
+    'byMediumDeepTau2018v2p5VSe_newDM':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_newDM'},
+    'byTightDeepTau2018v2p5VSe_newDM':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_newDM'},
+    'byLooseDeepTau2018v2p5VSmu_newDM':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_newDM'},
+    'byMediumDeepTau2018v2p5VSmu_newDM':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_newDM'},
+    'byTightDeepTau2018v2p5VSmu_newDM':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_newDM'},
     # 2016 new
     #"byLooseIsolationMVArun2v1DBnewDMwLT2016": {'var': 'tau_byLooseIsolationMVArun2v1DBnewDMwLT2016  > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseIsolationMVArun2v1DBnewDMwLT2016'},
     #'byMediumIsolationMVArun2v1DBnewDMwLT2016': {'var': 'tau_byMediumIsolationMVArun2v1DBnewDMwLT2016 > 0.5 && tau_decayModeFindingNewDMs > 0.5', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2v1DBnewDMwLT2016'},
@@ -145,15 +145,15 @@ vardict = {
     #'byMediumIsolationMVArun2v1DBnewDMwLT_newDMwo2p': {'var': 'tau_byMediumIsolationMVArun2v1DBnewDMwLT > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2v1DBnewDMwLT_newDMwo2p'},
     #'byTightIsolationMVArun2v1DBnewDMwLT_newDMwo2p':  {'var': 'tau_byTightIsolationMVArun2v1DBnewDMwLT  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2v1DBnewDMwLT_newDMwo2p'},
 
-    'byLooseDeepTau2017v2p1VSjet_newDMwo2p':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_newDMwo2p'},
-    'byMediumDeepTau2017v2p1VSjet_newDMwo2p':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_newDMwo2p'},
-    'byTightDeepTau2017v2p1VSjet_newDMwo2p':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_newDMwo2p'},
-    'byLooseDeepTau2017v2p1VSe_newDMwo2p':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_newDMwo2p'},
-    'byMediumDeepTau2017v2p1VSe_newDMwo2p':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_newDMwo2p'},
-    'byTightDeepTau2017v2p1VSe_newDMwo2p':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_newDMwo2p'},
-    'byLooseDeepTau2017v2p1VSmu_newDMwo2p':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_newDMwo2p'},
-    'byMediumDeepTau2017v2p1VSmu_newDMwo2p':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_newDMwo2p'},
-    'byTightDeepTau2017v2p1VSmu_newDMwo2p':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_newDMwo2p'},
+    'byLooseDeepTau2018v2p5VSjet_newDMwo2p':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_newDMwo2p'},
+    'byMediumDeepTau2018v2p5VSjet_newDMwo2p':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_newDMwo2p'},
+    'byTightDeepTau2018v2p5VSjet_newDMwo2p':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_newDMwo2p'},
+    'byLooseDeepTau2018v2p5VSe_newDMwo2p':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_newDMwo2p'},
+    'byMediumDeepTau2018v2p5VSe_newDMwo2p':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_newDMwo2p'},
+    'byTightDeepTau2018v2p5VSe_newDMwo2p':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_newDMwo2p'},
+    'byLooseDeepTau2018v2p5VSmu_newDMwo2p':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_newDMwo2p'},
+    'byMediumDeepTau2018v2p5VSmu_newDMwo2p':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_newDMwo2p'},
+    'byTightDeepTau2018v2p5VSmu_newDMwo2p':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && tau_decayModeFindingNewDMs > 0.5 && tau_dm != 5 && tau_dm != 6', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_newDMwo2p'},
 
     ##### WPs by DM:
     ### 1prong
@@ -182,15 +182,15 @@ vardict = {
     #'byMediumIsolationMVArun2017v2DBoldDMwLT2017_1p': {'var': 'tau_byMediumIsolationMVArun2017v2DBoldDMwLT2017 > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2017v2DBoldDMwLT2017_1p'},
     #'byTightIsolationMVArun2017v2DBoldDMwLT2017_1p':  {'var': 'tau_byTightIsolationMVArun2017v2DBoldDMwLT2017  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2017v2DBoldDMwLT2017_1p'},
 
-    'byLooseDeepTau2017v2p1VSjet_1p':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_1p'},
-    'byMediumDeepTau2017v2p1VSjet_1p':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_1p'},
-    'byTightDeepTau2017v2p1VSjet_1p':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_1p'},
-    'byLooseDeepTau2017v2p1VSe_1p':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_1p'},
-    'byMediumDeepTau2017v2p1VSe_1p':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_1p'},
-    'byTightDeepTau2017v2p1VSe_1p':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_1p'},
-    'byLooseDeepTau2017v2p1VSmu_1p':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_1p'},
-    'byMediumDeepTau2017v2p1VSmu_1p':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_1p'},
-    'byTightDeepTau2017v2p1VSmu_1p':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_1p'},
+    'byLooseDeepTau2018v2p5VSjet_1p':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_1p'},
+    'byMediumDeepTau2018v2p5VSjet_1p':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_1p'},
+    'byTightDeepTau2018v2p5VSjet_1p':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_1p'},
+    'byLooseDeepTau2018v2p5VSe_1p':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_1p'},
+    'byMediumDeepTau2018v2p5VSe_1p':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_1p'},
+    'byTightDeepTau2018v2p5VSe_1p':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_1p'},
+    'byLooseDeepTau2018v2p5VSmu_1p':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_1p'},
+    'byMediumDeepTau2018v2p5VSmu_1p':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_1p'},
+    'byTightDeepTau2018v2p5VSmu_1p':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 0', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_1p'},
 
     ### 1prong+pi0's
     'byLooseCombinedIsolationDeltaBetaCorr3Hits_1ppi0': {'var': 'tau_byLooseCombinedIsolationDeltaBetaCorr3Hits > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseCombinedIsolationDeltaBetaCorr3Hits'},
@@ -218,15 +218,15 @@ vardict = {
     #'byMediumIsolationMVArun2017v2DBoldDMwLT2017_1ppi0': {'var': 'tau_byMediumIsolationMVArun2017v2DBoldDMwLT2017 > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2017v2DBoldDMwLT2017_1ppi0'},
     #'byTightIsolationMVArun2017v2DBoldDMwLT2017_1ppi0':  {'var': 'tau_byTightIsolationMVArun2017v2DBoldDMwLT2017  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2017v2DBoldDMwLT2017_1ppi0'},
 
-    'byLooseDeepTau2017v2p1VSjet_1ppi0':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_1ppi0'},
-    'byMediumDeepTau2017v2p1VSjet_1ppi0':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_1ppi0'},
-    'byTightDeepTau2017v2p1VSjet_1ppi0':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_1ppi0'},
-    'byLooseDeepTau2017v2p1VSe_1ppi0':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_1ppi0'},
-    'byMediumDeepTau2017v2p1VSe_1ppi0':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_1ppi0'},
-    'byTightDeepTau2017v2p1VSe_1ppi0':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_1ppi0'},
-    'byLooseDeepTau2017v2p1VSmu_1ppi0':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_1ppi0'},
-    'byMediumDeepTau2017v2p1VSmu_1ppi0':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_1ppi0'},
-    'byTightDeepTau2017v2p1VSmu_1ppi0':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_1ppi0'},
+    'byLooseDeepTau2018v2p5VSjet_1ppi0':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_1ppi0'},
+    'byMediumDeepTau2018v2p5VSjet_1ppi0':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_1ppi0'},
+    'byTightDeepTau2018v2p5VSjet_1ppi0':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_1ppi0'},
+    'byLooseDeepTau2018v2p5VSe_1ppi0':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_1ppi0'},
+    'byMediumDeepTau2018v2p5VSe_1ppi0':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_1ppi0'},
+    'byTightDeepTau2018v2p5VSe_1ppi0':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_1ppi0'},
+    'byLooseDeepTau2018v2p5VSmu_1ppi0':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_1ppi0'},
+    'byMediumDeepTau2018v2p5VSmu_1ppi0':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_1ppi0'},
+    'byTightDeepTau2018v2p5VSmu_1ppi0':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && (tau_dm == 1 || tau_dm == 2)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_1ppi0'},
 
     ### 2prongs
     'byLooseCombinedIsolationDeltaBetaCorr3Hits_2p': {'var': 'tau_byLooseCombinedIsolationDeltaBetaCorr3Hits > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseCombinedIsolationDeltaBetaCorr3Hits'},
@@ -244,15 +244,15 @@ vardict = {
     'byMediumNeutralIsolationUnCorr_2p': {'var': 'tau_neutralIsoPtSum < 5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'neutral-iso < 5 GeV'},
     'byTightNeutralIsolationUnCorr_2p': {'var': 'tau_neutralIsoPtSum < 4 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'neutral-iso < 4 GeV'},
 
-    'byLooseDeepTau2017v2p1VSjet_2p':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_2p'},
-    'byMediumDeepTau2017v2p1VSjet_2p':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_2p'},
-    'byTightDeepTau2017v2p1VSjet_2p':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_2p'},
-    'byLooseDeepTau2017v2p1VSe_2p':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_2p'},
-    'byMediumDeepTau2017v2p1VSe_2p':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_2p'},
-    'byTightDeepTau2017v2p1VSe_2p':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_2p'},
-    'byLooseDeepTau2017v2p1VSmu_2p':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_2p'},
-    'byMediumDeepTau2017v2p1VSmu_2p':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_2p'},
-    'byTightDeepTau2017v2p1VSmu_2p':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_2p'},
+    'byLooseDeepTau2018v2p5VSjet_2p':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_2p'},
+    'byMediumDeepTau2018v2p5VSjet_2p':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_2p'},
+    'byTightDeepTau2018v2p5VSjet_2p':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_2p'},
+    'byLooseDeepTau2018v2p5VSe_2p':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_2p'},
+    'byMediumDeepTau2018v2p5VSe_2p':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_2p'},
+    'byTightDeepTau2018v2p5VSe_2p':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_2p'},
+    'byLooseDeepTau2018v2p5VSmu_2p':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_2p'},
+    'byMediumDeepTau2018v2p5VSmu_2p':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_2p'},
+    'byTightDeepTau2018v2p5VSmu_2p':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && (tau_dm == 5 || tau_dm==6)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_2p'},
 
     ### 3prongs (DM10+11)
     #'byLooseCombinedIsolationDeltaBetaCorr3Hits_3p': {'var': 'tau_byLooseCombinedIsolationDeltaBetaCorr3Hits > 0.5 && (tau_dm == 10 || tau_dm == 11)', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseCombinedIsolationDeltaBetaCorr3Hits'},
@@ -296,15 +296,15 @@ vardict = {
     #'byMediumIsolationMVArun2017v2DBoldDMwLT2017_3p': {'var': 'tau_byMediumIsolationMVArun2017v2DBoldDMwLT2017 > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2017v2DBoldDMwLT2017_3p'},
     #'byTightIsolationMVArun2017v2DBoldDMwLT2017_3p':  {'var': 'tau_byTightIsolationMVArun2017v2DBoldDMwLT2017  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2017v2DBoldDMwLT2017_3p'},
 
-    'byLooseDeepTau2017v2p1VSjet_3p':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_3p'},
-    'byMediumDeepTau2017v2p1VSjet_3p':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_3p'},
-    'byTightDeepTau2017v2p1VSjet_3p':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_3p'},
-    'byLooseDeepTau2017v2p1VSe_3p':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_3p'},
-    'byMediumDeepTau2017v2p1VSe_3p':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_3p'},
-    'byTightDeepTau2017v2p1VSe_3p':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_3p'},
-    'byLooseDeepTau2017v2p1VSmu_3p':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_3p'},
-    'byMediumDeepTau2017v2p1VSmu_3p':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_3p'},
-    'byTightDeepTau2017v2p1VSmu_3p':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_3p'},
+    'byLooseDeepTau2018v2p5VSjet_3p':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_3p'},
+    'byMediumDeepTau2018v2p5VSjet_3p':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_3p'},
+    'byTightDeepTau2018v2p5VSjet_3p':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_3p'},
+    'byLooseDeepTau2018v2p5VSe_3p':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_3p'},
+    'byMediumDeepTau2018v2p5VSe_3p':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_3p'},
+    'byTightDeepTau2018v2p5VSe_3p':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_3p'},
+    'byLooseDeepTau2018v2p5VSmu_3p':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_3p'},
+    'byMediumDeepTau2018v2p5VSmu_3p':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_3p'},
+    'byTightDeepTau2018v2p5VSmu_3p':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 10', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_3p'},
 
     ### 3prong+pi0's
     'byLooseCombinedIsolationDeltaBetaCorr3Hits_3ppi0': {'var': 'tau_byLooseCombinedIsolationDeltaBetaCorr3Hits > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseCombinedIsolationDeltaBetaCorr3Hits'},
@@ -332,15 +332,92 @@ vardict = {
     #'byMediumIsolationMVArun2017v2DBoldDMwLT2017_3ppi0': {'var': 'tau_byMediumIsolationMVArun2017v2DBoldDMwLT2017 > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumIsolationMVArun2017v2DBoldDMwLT2017_3ppi0'},
     #'byTightIsolationMVArun2017v2DBoldDMwLT2017_3ppi0':  {'var': 'tau_byTightIsolationMVArun2017v2DBoldDMwLT2017  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightIsolationMVArun2017v2DBoldDMwLT2017_3ppi0'},
 
-    'byLooseDeepTau2017v2p1VSjet_3ppi0':  {'var': 'tau_byLooseDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSjet_3ppi0'},
-    'byMediumDeepTau2017v2p1VSjet_3ppi0':  {'var': 'tau_byMediumDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSjet_3ppi0'},
-    'byTightDeepTau2017v2p1VSjet_3ppi0':  {'var': 'tau_byTightDeepTau2017v2p1VSjet  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSjet_3ppi0'},
-    'byLooseDeepTau2017v2p1VSe_3ppi0':  {'var': 'tau_byLooseDeepTau2017v2p1VSe  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSe_3ppi0'},
-    'byMediumDeepTau2017v2p1VSe_3ppi0':  {'var': 'tau_byMediumDeepTau2017v2p1VSe  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSe_3ppi0'},
-    'byTightDeepTau2017v2p1VSe_3ppi0':  {'var': 'tau_byTightDeepTau2017v2p1VSe  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSe_3ppi0'},
-    'byLooseDeepTau2017v2p1VSmu_3ppi0':  {'var': 'tau_byLooseDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2017v2p1VSmu_3ppi0'},
-    'byMediumDeepTau2017v2p1VSmu_3ppi0':  {'var': 'tau_byMediumDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2017v2p1VSmu_3ppi0'},
-    'byTightDeepTau2017v2p1VSmu_3ppi0':  {'var': 'tau_byTightDeepTau2017v2p1VSmu  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2017v2p1VSmu_3ppi0'},
+    'byLooseDeepTau2018v2p5VSjet_3ppi0':  {'var': 'tau_byLooseDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSjet_3ppi0'},
+    'byMediumDeepTau2018v2p5VSjet_3ppi0':  {'var': 'tau_byMediumDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSjet_3ppi0'},
+    'byTightDeepTau2018v2p5VSjet_3ppi0':  {'var': 'tau_byTightDeepTau2018v2p5VSjet  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSjet_3ppi0'},
+    'byLooseDeepTau2018v2p5VSe_3ppi0':  {'var': 'tau_byLooseDeepTau2018v2p5VSe  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSe_3ppi0'},
+    'byMediumDeepTau2018v2p5VSe_3ppi0':  {'var': 'tau_byMediumDeepTau2018v2p5VSe  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSe_3ppi0'},
+    'byTightDeepTau2018v2p5VSe_3ppi0':  {'var': 'tau_byTightDeepTau2018v2p5VSe  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSe_3ppi0'},
+    'byLooseDeepTau2018v2p5VSmu_3ppi0':  {'var': 'tau_byLooseDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byLooseDeepTau2018v2p5VSmu_3ppi0'},
+    'byMediumDeepTau2018v2p5VSmu_3ppi0':  {'var': 'tau_byMediumDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byMediumDeepTau2018v2p5VSmu_3ppi0'},
+    'byTightDeepTau2018v2p5VSmu_3ppi0':  {'var': 'tau_byTightDeepTau2018v2p5VSmu  > 0.5 && tau_dm == 11', 'nbin': 2, 'min': -0.5, 'max': 1.5, 'title': 'byTightDeepTau2018v2p5VSmu_3ppi0'},
+    'byUTagPUPPIDecayMode': {
+        'var': 'tau_byUTagPUPPIDecayMode > 0.5',
+        'nbin': 6,
+        'min': -0.5,
+        'max': 5.5,
+        'title': 'byUTagPUPPIDecayMode'
+    },
+    'byUTagPUPPIVSjetraw': {
+        'var': 'tau_byUTagPUPPIVSjetraw > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIVSjetraw'
+    },
+    'byUTagPUPPIVSeraw': {
+        'var': 'tau_byUTagPUPPIVSeraw > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIVSeraw'
+    },
+    'byUTagPUPPIVSmuraw': {
+        'var': 'tau_byUTagPUPPIVSmuraw > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIVSmuraw'
+    },
+    'byUTagPUPPIPtCorr': {
+        'var': 'tau_byUTagPUPPIPtCorr > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 200.0,
+        'title': 'byUTagPUPPIPtCorr'
+    },
+    'byUTagPUPPIQConf': {
+        'var': 'tau_byUTagPUPPIQConf > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIQConf'
+    },
+    'byUTagPUPPIProb1h0pi0': {
+        'var': 'tau_byUTagPUPPIProb1h0pi0 > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIProb1h0pi0'
+    },
+    'byUTagPUPPIProb1h1pi0': {
+        'var': 'tau_byUTagPUPPIProb1h1pi0 > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIProb1h1pi0'
+    },
+    'byUTagPUPPIProb1h2pi0': {
+        'var': 'tau_byUTagPUPPIProb1h2pi0 > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIProb1h2pi0'
+    },
+    'byUTagPUPPIProb3h0pi0': {
+        'var': 'tau_byUTagPUPPIProb3h0pi0 > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIProb3h0pi0'
+    },
+    'byUTagPUPPIProb3h1pi0': {
+        'var': 'tau_byUTagPUPPIProb3h1pi0 > 0.5',
+        'nbin': 50,
+        'min': 0.0,
+        'max': 1.0,
+        'title': 'byUTagPUPPIProb3h1pi0'
+    },
 }
 
 #####
@@ -366,7 +443,7 @@ hvardict = {
     
     'pu_isoPt': {'var': 'tau_puCorrPtSum', 'nbin': 50, 'min': 0., 'max': 100, 'title': 'PU charged PtSum [GeV]', 'sel': 'tau_genpt>0&&tau_pt>0'},
     
-    'tau_CombIsoRaw': {'var': 'tau_byCombinedIsolationDeltaBetaCorrRaw3Hits', 'nbin': 20, 'min': 0., 'max': 10, 'title': 'combined iso (oldDMs) (GeV)', 'sel': 'tau_genpt>0&&tau_pt>0&&tau_decayModeFinding > 0.5'},
+    #'tau_CombIsoRaw': {'var': 'tau_byCombinedIsolationDeltaBetaCorrRaw3Hits', 'nbin': 20, 'min': 0., 'max': 10, 'title': 'combined iso (oldDMs) (GeV)', 'sel': 'tau_genpt>0&&tau_pt>0&&tau_decayModeFinding > 0.5'},
     
     #'tau_MVA':     {    'var': 'tau_byIsolationMVArun2v1DBoldDMwLTraw', 'nbin': 40, 'min': -1., 'max': 1, 'title': 'Raw IsoMVA (oldDMs)', 'sel': 'tau_genpt > 0 && tau_pt > 0 && tau_decayModeFinding > 0.5'},
     #'tau_MVAIsoRaw':   {'var': 'tau_byIsolationMVArun2v1DBoldDMwLTraw', 'nbin': 40, 'min': -1., 'max': 1, 'title': 'Raw IsoMVA (oldDMs)', 'sel': 'tau_genpt > 0 && tau_pt > 0 && tau_decayModeFinding > 0.5'},
@@ -390,6 +467,7 @@ hvardict = {
     'tau_ip3d_err': {'var': 'tau_ip3d_err', 'nbin': 40, 'min': 0., 'max': 0.01, 'title': 'tau_ip3d_err', 'sel': 'tau_genpt>0&&tau_pt>0'},
     'tau_ip3d_sig': {'var': 'tau_ip3d_sig', 'nbin': 25, 'min': 0., 'max': 10, 'title': 'tau_ip3d_sig', 'sel': 'tau_genpt>0&&tau_pt>0'},
 
+    'tau_mass'  : {'var': 'tau_mass', 'nbin': 30, 'min': 0., 'max': 2.5, 'title': 'Tau mass', 'sel': 'tau_genpt>0&&tau_pt>0'},
     'tau_mass_1prong': {'var': 'tau_mass', 'nbin': 30, 'min': 0., 'max': 2.5, 'title': 'Tau mass, 1prong', 'sel': 'tau_genpt>0&&tau_pt>0&&tau_dm==0'},
     'tau_mass_1prongp0': {'var': 'tau_mass', 'nbin': 30, 'min': 0., 'max': 2.5, 'title': 'Tau mass, 1prong+#pi^{0}', 'sel': 'tau_genpt>0&&tau_pt>0&&tau_dm==1'},
     'tau_mass_2prong': {'var': 'tau_mass', 'nbin': 30, 'min': 0., 'max': 2.5, 'title': 'Tau mass, 2prong', 'sel': 'tau_genpt>0&&tau_pt>0&&(tau_dm==5 || tau_dm==6)'},
@@ -409,10 +487,10 @@ hvardict = {
     'pt_resolution_3prong': {'var': '(tau_genpt-tau_pt)/(tau_genpt)', 'nbin': 30, 'min': -1., 'max': 1., 'title': 'pT resolution, 3prong (+#pi^{0})', 'sel': 'tau_genpt>0&&tau_pt>0&&(tau_dm==10 || tau_dm==11)'},
     'pt_resolution_3prong_old': {'var': '(tau_genpt-tau_pt)/(tau_genpt)', 'nbin': 30, 'min': -1., 'max': 1., 'title': 'pT resolution, 3prong (0#pi^{0})', 'sel': 'tau_genpt>0&&tau_pt>0&&tau_dm==10'},
 
-    # v2p1 discriminators
-    'tau_byDeepTau2017v2p1VSjetraw':{'var': 'tau_byDeepTau2017v2p1VSjetraw', 'nbin':20, 'min':0., 'max' : 1, 'title': 'Raw DeepTauv2p1 vs jets', 'sel': 'tau_pt>0'},
-    'tau_byDeepTau2017v2p1VSmuraw':{'var': 'tau_byDeepTau2017v2p1VSmuraw', 'nbin':20, 'min':0., 'max' : 1, 'title': 'Raw DeepTauv2p1 vs muons', 'sel': 'tau_pt>0'},
-    'tau_byDeepTau2017v2p1VSeraw':{'var': 'tau_byDeepTau2017v2p1VSeraw', 'nbin':20, 'min':0., 'max' : 1, 'title': 'Raw DeepTauv2p1 vs electrons', 'sel': 'tau_pt>0'},
+    # v2p5 discriminators
+    'tau_byDeepTau2018v2p5VSjetraw':{'var': 'tau_rawDeepTauVSjet', 'nbin':20, 'min':0., 'max' : 1, 'title': 'Raw DeepTauv2p5 vs jets', 'sel': 'tau_pt>0'},
+    'tau_byDeepTau2018v2p5VSmuraw':{'var': 'tau_rawDeepTauVSmu', 'nbin':20, 'min':0., 'max' : 1, 'title': 'Raw DeepTauv2p5 vs muons', 'sel': 'tau_pt>0'},
+    'tau_byDeepTau2018v2p5VSeraw':{'var': 'tau_rawDeepTauVSe', 'nbin':20, 'min':0., 'max' : 1, 'title': 'Raw DeepTauv2p5 vs electrons', 'sel': 'tau_pt>0'},
 
     # Does not exist as branch in rel val samples anymore    
     # 'tau_MVAIsoRaw17v2': {'var': 'tau_byIsolationMVArun2017v2DBoldDMwLTraw2017', 'nbin': 40, 'min': -1., 'max': 1, 'title': 'Raw IsoMVA (oldDMs)', 'sel': 'tau_genpt > 0 && tau_pt > 0 && tau_decayModeFinding > 0.5'},
@@ -427,7 +505,13 @@ hvardict = {
     #'charged_isoPt01':{'var':'tau_iso_dz02', 'nbin':20, 'min':0., 'max':10, 'title':'charged iso (|dz|<0.1cm) [GeV]', 'sel':'tau_genpt>0&&tau_pt>0'},
     #'charged_isoPt001':{'var':'tau_iso_dz001', 'nbin':20, 'min':0., 'max':10, 'title':'charged iso (|dz|<0.015cm) [GeV]', 'sel':'tau_genpt>0&&tau_pt>0'},
     #'charged_isoPt003':{'var':'tau_iso_dz001', 'nbin':20, 'min':0., 'max':10, 'title':'charged iso (|dz|<0.03cm) [GeV]', 'sel':'tau_genpt>0&&tau_pt>0'},
-    
 
-    
+    'tau_rawPNetVSjet': {'var': 'tau_rawPNetVSjet', 'nbin': 50, 'min': 0.0, 'max': 1.0, 'title': 'Raw PNet PUPPI VSjet', 'sel': 'tau_pt>0'},
+    'tau_rawPNetVSe': {'var': 'tau_rawPNetVSe', 'nbin': 50, 'min': 0.0, 'max': 1.0, 'title': 'Raw PNet PUPPI VSe', 'sel': 'tau_pt>0'},
+    'tau_rawPNetVSmu': {'var': 'tau_rawPNetVSmu', 'nbin': 50, 'min': 0.0, 'max': 1.0, 'title': 'Raw PNet PUPPI VSmu', 'sel': 'tau_pt>0'},
+
+    'tau_rawUTagVSe': {'var': 'tau_rawUTagVSe', 'nbin': 50, 'min': 0.0, 'max': 1.0, 'title': 'Raw UTag PUPPI VSe', 'sel': 'tau_pt>0'},
+    'tau_rawUTagVSmu': {'var': 'tau_rawUTagVSmu', 'nbin': 50, 'min': 0.0, 'max': 1.0, 'title': 'Raw UTag PUPPI VSmu', 'sel': 'tau_pt>0'},
+    'tau_rawUTagVSjet': {'var': 'tau_rawUTagVSjet', 'nbin': 50, 'min': 0.0, 'max': 1.0, 'title': 'Raw UTag PUPPI VSjet', 'sel': 'tau_pt>0'},
+
 }

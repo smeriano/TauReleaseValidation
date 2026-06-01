@@ -134,6 +134,14 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     addArguments(parser, produce=True, compare=False)
+    parser.add_argument("--skipGenMatching", action='store_true', help="Fill tree with all taus, skipping gen-matching")
+    parser.add_argument(
+        "--hpsTausOnly",
+        action='store_true',
+        default=False,
+        help="Keep only HPS taus, selected with decayModeFindingNewDMs == 1. "
+             "By default both HPS and recovery taus are kept."
+    )
     args = parser.parse_args()
 
     runtype = args.runtype
@@ -279,7 +287,19 @@ if __name__ == '__main__':
         Var('tau_ip3d_err', float),
         Var('tau_ip3d_sig', float),
         Var('tau_flightLength', float),
-        Var('tau_flightLength_sig', float)
+        Var('tau_flightLength_sig', float),
+
+        Var('tau_rawDeepTauVSjet', float),
+        Var('tau_rawDeepTauVSe', float),
+        Var('tau_rawDeepTauVSmu', float),
+
+        Var('tau_rawPNetVSjet', float),
+        Var('tau_rawPNetVSe', float),
+        Var('tau_rawPNetVSmu', float),
+
+        Var('tau_rawUTagVSe', float),
+        Var('tau_rawUTagVSmu', float),
+        Var('tau_rawUTagVSjet', float),
     ]
 
     if not no_anti_lepton:
@@ -442,85 +462,63 @@ if __name__ == '__main__':
             refObjs = copy.deepcopy(genMuons)
 
         ###
-        Matched = MatchTausToJets(refObjs)
-
-        ###
-        h_ngen.Fill(len(refObjs))
-        for refidx,refObj in enumerate(refObjs):
-            for var in all_vars:
-                var.reset()
-            all_var_dict['tau_id'].fill(evtid)
-            all_var_dict['tau_eventid'].fill(eid)
-            all_var_dict['tau_vertex'].fill(len(vertices))
-            if not runtype in data_run_types:
-                for iPuInfo in puInfo:
-                    if iPuInfo.getBunchCrossing() == 0:
-                        all_var_dict['tau_nTruePU'].fill(
-                            iPuInfo.getTrueNumInteractions())
-                        all_var_dict['tau_nPU'].fill(
-                            iPuInfo.getPU_NumInteractions())
-                        break
-
-            if runtype in tau_run_types:
-                gen_dm = tauDecayModes.genDecayModeInt(
-                    [d for d in finalDaughters(refObj)
-                        if (abs(d.pdgId()) not in [12, 14, 16])]
-                )
-
-                all_var_dict['tau_gendm'].fill(gen_dm)
-                all_var_dict['tau_genpt'].fill(refObj.visP4.pt())
-                all_var_dict['tau_geneta'].fill(refObj.visP4.eta())
-                all_var_dict['tau_genphi'].fill(refObj.visP4.phi())
-                charged_p4 = sum(
-                    (d.p4() for d in refObj.final_ds
-                        if d.charge()),
-                    ROOT.math.XYZTLorentzVectorD())
-                neutral_p4 = sum(
-                    (d.p4() for d in refObj.final_ds
-                        if (abs(d.pdgId()) not in [12, 14, 16] and
-                            not d.charge())),
-                    ROOT.math.XYZTLorentzVectorD())
-                all_var_dict['tau_genchargedpt'].fill(charged_p4.pt())
-                all_var_dict['tau_genneutralpt'].fill(neutral_p4.pt())
-            else:
-                all_var_dict['tau_gendm'].fill(-1)
-                all_var_dict['tau_genpt'].fill(refObj.pt())
-                all_var_dict['tau_geneta'].fill(refObj.eta())
-                all_var_dict['tau_genphi'].fill(refObj.phi())
-
-            if refidx in Matched:
-                tau = taus[Matched[refidx]]
-                # Fill reco-tau variables if it exists...
-                NMatchedTaus += 1
-
+        if args.skipGenMatching:
+            # tau loop without gen-matching
+            for tau in taus:
+                for var in all_vars:
+                    var.reset()
+                id_value = tau.tauID("decayModeFindingNewDMs")
+                if args.hpsTausOnly and id_value != 1:
+                    continue
+                all_var_dict['tau_id'].fill(evtid)
+                all_var_dict['tau_eventid'].fill(eid)
+                all_var_dict['tau_vertex'].fill(len(vertices))
+                if not runtype in data_run_types:
+                    for iPuInfo in puInfo:
+                        if iPuInfo.getBunchCrossing() == 0:
+                            all_var_dict['tau_nTruePU'].fill(iPuInfo.getTrueNumInteractions())
+                            all_var_dict['tau_nPU'].fill(iPuInfo.getPU_NumInteractions())
+                            break
+                # For tau run types, gen info is not available if skipping matching;
+                # fill default values (or -1)
+                if runtype in tau_run_types:
+                    all_var_dict['tau_gendm'].fill(-1)
+                    all_var_dict['tau_genpt'].fill(0.)
+                    all_var_dict['tau_geneta'].fill(0.)
+                    all_var_dict['tau_genphi'].fill(0.)
+                    all_var_dict['tau_genchargedpt'].fill(0.)
+                    all_var_dict['tau_genneutralpt'].fill(0.)
+                else:
+                    # For other run types, use tau's own kinematics as fallback
+                    all_var_dict['tau_gendm'].fill(-1)
+                    all_var_dict['tau_genpt'].fill(tau.pt())
+                    all_var_dict['tau_geneta'].fill(tau.eta())
+                    all_var_dict['tau_genphi'].fill(tau.phi())
+                # Fill reco tau variables
                 all_var_dict['tau_dm'].fill(tau.decayMode())
                 all_var_dict['tau_pt'].fill(tau.pt())
                 all_var_dict['tau_eta'].fill(tau.eta())
                 all_var_dict['tau_phi'].fill(tau.phi())
                 all_var_dict['tau_mass'].fill(tau.mass())
-
                 all_var_dict['tau_chargedpt'].fill(
                     sum((d.p4() for d in tau.signalChargedHadrCands()),
                         ROOT.math.XYZTLorentzVectorD()).pt())
                 all_var_dict['tau_neutralpt'].fill(
                     sum((d.p4() for d in tau.signalGammaCands()),
-                        ROOT.math.XYZTLorentzVectorD()).pt()
-                )
-
-                # Use candidate to vertex associaton as in MiniAOD
-                tau_vertex_idxpf = tau.leadChargedHadrCand().vertexRef().key()
-
+                        ROOT.math.XYZTLorentzVectorD()).pt())
+                try:
+                    tau_vertex_idxpf = tau.leadChargedHadrCand().vertexRef().key()
+                except:
+                    tau_vertex_idxpf = -1
                 tau_tauVtxTovtx_dz = 99
                 for i, vertex in enumerate(vertices):
-
-                    if i == tau_vertex_idxpf:
+                    if tau_vertex_idxpf == -1 or i == tau_vertex_idxpf:
                         continue
-
                     vtxdz = abs(vertex.z() - vertices[tau_vertex_idxpf].z())
                     if vtxdz < tau_tauVtxTovtx_dz:
                         tau_tauVtxTovtx_dz = vtxdz
-
                 all_var_dict['tau_tauVtxTovtx_dz'].fill(tau_tauVtxTovtx_dz)
+                # Fill isolation variables (as in existing code)
                 all_var_dict['tau_iso_dz001'].fill(0.)
                 all_var_dict['tau_iso_dz02'].fill(0.)
                 all_var_dict['tau_iso_pv'].fill(0.)
@@ -528,92 +526,211 @@ if __name__ == '__main__':
                 all_var_dict['tau_iso_neu'].fill(0.)
                 all_var_dict['tau_iso_puppi'].fill(0.)
                 all_var_dict['tau_iso_puppiNoL'].fill(0.)
-
                 for cand in tau.isolationChargedHadrCands():
-
                     if not abs(cand.charge()) > 0:
                         continue
-                    if deltaR(tau.eta(),
-                              tau.phi(),
-                              cand.eta(),
-                              cand.phi()) > 0.5:
+                    if deltaR(tau.eta(), tau.phi(), cand.eta(), cand.phi()) > 0.5:
                         continue
-
                     def get_track(charged_cand):
                         if is_above_cmssw_version(9, 2, 0):
                             if charged_cand.hasTrackDetails():
                                 return charged_cand.pseudoTrack()
                             return None
                         return charged_cand.pseudoTrack()
-
-                    # MB use candidate methods only
-                    if (cand.pt() <= 0.5 or
-                            cand.dxy(
-                                vertices[tau_vertex_idxpf].position()
-                    ) >= 0.1):
-                        continue
-
-                    cand_track = get_track(cand)
-                    if not cand_track:
-                        continue
-                    if (cand.numberOfHits() > 0 and
-                            (cand_track.normalizedChi2() >= 100. or
-                             cand.numberOfHits() < 3)):
-                        continue
-                    # dz_tt = tt.dz(vertices[tau_vertex_idxpf].position())
-
-                    # MB use cand methods only
-                    dz_tt = cand.dz(vertices[tau_vertex_idxpf].position())
-                    if abs(dz_tt) < 0.2:
-                        all_var_dict['tau_iso_dz02'].add(cand.pt())
-                        all_var_dict['tau_iso_puppi'].add(
-                            cand.pt() * cand.puppiWeight())
-                        all_var_dict['tau_iso_puppiNoL'].add(
-                            cand.pt() * cand.puppiWeightNoLep())
-
-                    if abs(dz_tt) < 0.015:
-                        all_var_dict['tau_iso_dz001'].add(cand.pt())
-
-                    if (cand.vertexRef().key() == tau_vertex_idxpf and
-                            cand.pvAssociationQuality() > 4):
-                        all_var_dict['tau_iso_pv'].add(cand.pt())
-
-                    elif (cand.vertexRef().key() != tau_vertex_idxpf and
-                          abs(dz_tt) < 0.2):
-                        all_var_dict['tau_iso_nopv'].add(cand.pt())
-
+                    if tau_vertex_idxpf != -1:
+                        if (cand.pt() <= 0.5 or cand.dxy(vertices[tau_vertex_idxpf].position()) >= 0.1):
+                            continue
+                        cand_track = get_track(cand)
+                        if not cand_track:
+                            continue
+                        if (cand.numberOfHits() > 0 and (cand_track.normalizedChi2() >= 100. or cand.numberOfHits() < 3)):
+                            continue
+                        dz_tt = cand.dz(vertices[tau_vertex_idxpf].position())
+                        if abs(dz_tt) < 0.2:
+                            all_var_dict['tau_iso_dz02'].add(cand.pt())
+                            all_var_dict['tau_iso_puppi'].add(cand.pt() * cand.puppiWeight())
+                            all_var_dict['tau_iso_puppiNoL'].add(cand.pt() * cand.puppiWeightNoLep())
+                        if abs(dz_tt) < 0.015:
+                            all_var_dict['tau_iso_dz001'].add(cand.pt())
+                        if (cand.vertexRef().key() == tau_vertex_idxpf and cand.pvAssociationQuality() > 4):
+                            all_var_dict['tau_iso_pv'].add(cand.pt())
+                        elif (cand.vertexRef().key() != tau_vertex_idxpf and abs(dz_tt) < 0.2):
+                            all_var_dict['tau_iso_nopv'].add(cand.pt())
                 for cand in tau.isolationGammaCands():
                     if abs(cand.charge()) > 0 or abs(cand.pdgId()) != 22:
                         continue
-                    if deltaR(tau.eta(),
-                              tau.phi(),
-                              cand.eta(),
-                              cand.phi()) > 0.5:
+                    if deltaR(tau.eta(), tau.phi(), cand.eta(), cand.phi()) > 0.5:
                         continue
                     if cand.pt() <= 0.5:
                         continue
-
                     all_var_dict['tau_iso_neu'].add(cand.pt())
-                    all_var_dict['tau_iso_puppi'].add(
-                        cand.pt() * cand.puppiWeight())
-                    all_var_dict['tau_iso_puppiNoL'].add(
-                        cand.pt() * cand.puppiWeightNoLep())
-
+                    all_var_dict['tau_iso_puppi'].add(cand.pt() * cand.puppiWeight())
+                    all_var_dict['tau_iso_puppiNoL'].add(cand.pt() * cand.puppiWeightNoLep())
                 all_var_dict['tau_dxy'].fill(tau.dxy())
                 all_var_dict['tau_dxy_err'].fill(tau.dxy_error())
                 all_var_dict['tau_dxy_sig'].fill(tau.dxy_Sig())
                 all_var_dict['tau_ip3d'].fill(tau.ip3d())
                 all_var_dict['tau_ip3d_err'].fill(tau.ip3d_error())
                 all_var_dict['tau_ip3d_sig'].fill(tau.ip3d_Sig())
-
                 if tau.hasSecondaryVertex():
-                    all_var_dict['tau_flightLength'].fill(
-                        math.sqrt(tau.flightLength().mag2()))
-                    all_var_dict['tau_flightLength_sig'].fill(
-                        tau.flightLengthSig())
-
+                    all_var_dict['tau_flightLength'].fill(math.sqrt(tau.flightLength().mag2()))
+                    all_var_dict['tau_flightLength_sig'].fill(tau.flightLengthSig())
                 fill_tau_ids(all_var_dict, tau, all_tau_ids)
-            tau_tree.Fill()
+                # Raw scores per tau type
+                if id_value > 0:
+                    all_var_dict['tau_rawDeepTauVSjet'].fill( tau.tauID("byDeepTau2018v2p5VSjetraw") )
+                    all_var_dict['tau_rawDeepTauVSe'].fill( tau.tauID("byDeepTau2018v2p5VSeraw") )
+                    all_var_dict['tau_rawDeepTauVSmu'].fill( tau.tauID("byDeepTau2018v2p5VSmuraw") )
+
+                if tau.isTauIDAvailable("byUTagCHSVSjetraw"):
+                    all_var_dict['tau_rawPNetVSjet'].fill( tau.tauID("byUTagCHSVSjetraw") )
+                    all_var_dict['tau_rawPNetVSe'].fill( tau.tauID("byUTagCHSVSeraw") )
+                    all_var_dict['tau_rawPNetVSmu'].fill( tau.tauID("byUTagCHSVSmuraw") )
+
+                if tau.isTauIDAvailable("byUTagPUPPIVSeraw"):
+                    all_var_dict['tau_rawUTagVSe'].fill( tau.tauID("byUTagPUPPIVSeraw") )
+                    all_var_dict['tau_rawUTagVSmu'].fill( tau.tauID("byUTagPUPPIVSmuraw") )
+                    all_var_dict['tau_rawUTagVSjet'].fill( tau.tauID("byUTagPUPPIVSjetraw") )
+                tau_tree.Fill()
+        else:
+            Matched = MatchTausToJets(refObjs)
+            for refidx,refObj in enumerate(refObjs):
+                for var in all_vars:
+                    var.reset()
+                all_var_dict['tau_id'].fill(evtid)
+                all_var_dict['tau_eventid'].fill(eid)
+                all_var_dict['tau_vertex'].fill(len(vertices))
+                if not runtype in data_run_types:
+                    for iPuInfo in puInfo:
+                        if iPuInfo.getBunchCrossing() == 0:
+                            all_var_dict['tau_nTruePU'].fill(iPuInfo.getTrueNumInteractions())
+                            all_var_dict['tau_nPU'].fill(iPuInfo.getPU_NumInteractions())
+                            break
+                if runtype in tau_run_types:
+                    gen_dm = tauDecayModes.genDecayModeInt(
+                        [d for d in finalDaughters(refObj)
+                         if (abs(d.pdgId()) not in [12, 14, 16])]
+                    )
+                    all_var_dict['tau_gendm'].fill(gen_dm)
+                    all_var_dict['tau_genpt'].fill(refObj.visP4.pt())
+                    all_var_dict['tau_geneta'].fill(refObj.visP4.eta())
+                    all_var_dict['tau_genphi'].fill(refObj.visP4.phi())
+                    charged_p4 = sum((d.p4() for d in refObj.final_ds
+                                      if d.charge()), ROOT.math.XYZTLorentzVectorD())
+                    neutral_p4 = sum((d.p4() for d in refObj.final_ds
+                                      if (abs(d.pdgId()) not in [12, 14, 16] and not d.charge())),
+                                     ROOT.math.XYZTLorentzVectorD())
+                    all_var_dict['tau_genchargedpt'].fill(charged_p4.pt())
+                    all_var_dict['tau_genneutralpt'].fill(neutral_p4.pt())
+                else:
+                    all_var_dict['tau_gendm'].fill(-1)
+                    all_var_dict['tau_genpt'].fill(refObj.pt())
+                    all_var_dict['tau_geneta'].fill(refObj.eta())
+                    all_var_dict['tau_genphi'].fill(refObj.phi())
+                if refidx in Matched:
+                    tau = taus[Matched[refidx]]
+                    NMatchedTaus += 1
+                    id_value = tau.tauID("decayModeFindingNewDMs")
+                    if args.hpsTausOnly and id_value != 1:
+                        continue
+                    all_var_dict['tau_dm'].fill(tau.decayMode())
+                    all_var_dict['tau_pt'].fill(tau.pt())
+                    all_var_dict['tau_eta'].fill(tau.eta())
+                    all_var_dict['tau_phi'].fill(tau.phi())
+                    all_var_dict['tau_mass'].fill(tau.mass())
+                    all_var_dict['tau_chargedpt'].fill(
+                        sum((d.p4() for d in tau.signalChargedHadrCands()),
+                            ROOT.math.XYZTLorentzVectorD()).pt())
+                    all_var_dict['tau_neutralpt'].fill(
+                        sum((d.p4() for d in tau.signalGammaCands()),
+                            ROOT.math.XYZTLorentzVectorD()).pt())
+                    try:
+                        tau_vertex_idxpf = tau.leadChargedHadrCand().vertexRef().key()
+                    except:
+                        tau_vertex_idxpf = -1
+                    tau_tauVtxTovtx_dz = 99
+                    for i, vertex in enumerate(vertices):
+                        if tau_vertex_idxpf == -1 or i == tau_vertex_idxpf:
+                            continue
+                        vtxdz = abs(vertex.z() - vertices[tau_vertex_idxpf].z())
+                        if vtxdz < tau_tauVtxTovtx_dz:
+                            tau_tauVtxTovtx_dz = vtxdz
+                    all_var_dict['tau_tauVtxTovtx_dz'].fill(tau_tauVtxTovtx_dz)
+                    all_var_dict['tau_iso_dz001'].fill(0.)
+                    all_var_dict['tau_iso_dz02'].fill(0.)
+                    all_var_dict['tau_iso_pv'].fill(0.)
+                    all_var_dict['tau_iso_nopv'].fill(0.)
+                    all_var_dict['tau_iso_neu'].fill(0.)
+                    all_var_dict['tau_iso_puppi'].fill(0.)
+                    all_var_dict['tau_iso_puppiNoL'].fill(0.)
+                    for cand in tau.isolationChargedHadrCands():
+                        if not abs(cand.charge()) > 0:
+                            continue
+                        if deltaR(tau.eta(), tau.phi(), cand.eta(), cand.phi()) > 0.5:
+                            continue
+                        def get_track(charged_cand):
+                            if is_above_cmssw_version(9, 2, 0):
+                                if charged_cand.hasTrackDetails():
+                                    return charged_cand.pseudoTrack()
+                                return None
+                            return charged_cand.pseudoTrack()
+                        if tau_vertex_idxpf != -1:
+                            if (cand.pt() <= 0.5 or cand.dxy(vertices[tau_vertex_idxpf].position()) >= 0.1):
+                                continue
+                            cand_track = get_track(cand)
+                            if not cand_track:
+                                continue
+                            if (cand.numberOfHits() > 0 and (cand_track.normalizedChi2() >= 100. or cand.numberOfHits() < 3)):
+                                continue
+                            dz_tt = cand.dz(vertices[tau_vertex_idxpf].position())
+                            if abs(dz_tt) < 0.2:
+                                all_var_dict['tau_iso_dz02'].add(cand.pt())
+                                all_var_dict['tau_iso_puppi'].add(cand.pt() * cand.puppiWeight())
+                                all_var_dict['tau_iso_puppiNoL'].add(cand.pt() * cand.puppiWeightNoLep())
+                            if abs(dz_tt) < 0.015:
+                                all_var_dict['tau_iso_dz001'].add(cand.pt())
+                            if (cand.vertexRef().key() == tau_vertex_idxpf and cand.pvAssociationQuality() > 4):
+                                all_var_dict['tau_iso_pv'].add(cand.pt())
+                            elif (cand.vertexRef().key() != tau_vertex_idxpf and abs(dz_tt) < 0.2):
+                                all_var_dict['tau_iso_nopv'].add(cand.pt())
+                    for cand in tau.isolationGammaCands():
+                        if abs(cand.charge()) > 0 or abs(cand.pdgId()) != 22:
+                            continue
+                        if deltaR(tau.eta(), tau.phi(), cand.eta(), cand.phi()) > 0.5:
+                            continue
+                        if cand.pt() <= 0.5:
+                            continue
+                        all_var_dict['tau_iso_neu'].add(cand.pt())
+                        all_var_dict['tau_iso_puppi'].add(cand.pt() * cand.puppiWeight())
+                        all_var_dict['tau_iso_puppiNoL'].add(cand.pt() * cand.puppiWeightNoLep())
+                    all_var_dict['tau_dxy'].fill(tau.dxy())
+                    all_var_dict['tau_dxy_err'].fill(tau.dxy_error())
+                    all_var_dict['tau_dxy_sig'].fill(tau.dxy_Sig())
+                    all_var_dict['tau_ip3d'].fill(tau.ip3d())
+                    all_var_dict['tau_ip3d_err'].fill(tau.ip3d_error())
+                    all_var_dict['tau_ip3d_sig'].fill(tau.ip3d_Sig())
+                    if tau.hasSecondaryVertex():
+                        all_var_dict['tau_flightLength'].fill(math.sqrt(tau.flightLength().mag2()))
+                        all_var_dict['tau_flightLength_sig'].fill(tau.flightLengthSig())
+
+                    fill_tau_ids(all_var_dict, tau, all_tau_ids)
+
+                    # Raw scores per tau type
+                    if id_value > 0:
+                        all_var_dict['tau_rawDeepTauVSjet'].fill( tau.tauID("byDeepTau2018v2p5VSjetraw") )
+                        all_var_dict['tau_rawDeepTauVSe'].fill( tau.tauID("byDeepTau2018v2p5VSeraw") )
+                        all_var_dict['tau_rawDeepTauVSmu'].fill( tau.tauID("byDeepTau2018v2p5VSmuraw") )
+
+                    if tau.isTauIDAvailable("byUTagCHSVSjetraw"):
+                        all_var_dict['tau_rawPNetVSjet'].fill( tau.tauID("byUTagCHSVSjetraw") )
+                        all_var_dict['tau_rawPNetVSe'].fill( tau.tauID("byUTagCHSVSeraw") )
+                        all_var_dict['tau_rawPNetVSmu'].fill( tau.tauID("byUTagCHSVSmuraw") )
+
+                    if tau.isTauIDAvailable("byUTagPUPPIVSeraw"):
+                        all_var_dict['tau_rawUTagVSe'].fill( tau.tauID("byUTagPUPPIVSeraw") )
+                        all_var_dict['tau_rawUTagVSmu'].fill( tau.tauID("byUTagPUPPIVSmuraw") )
+                        all_var_dict['tau_rawUTagVSjet'].fill( tau.tauID("byUTagPUPPIVSjetraw") )
+                tau_tree.Fill()
     print ("MATCHED TAUS:", NMatchedTaus)
     print (evtid, 'events are processed !')
 

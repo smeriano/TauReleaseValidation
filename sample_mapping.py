@@ -14,6 +14,8 @@ runtype_to_sample = {
     'DataTau' : 'Tau', 
     'DataMu'  : 'SingleMuon', 
     'DataEl'  : 'EGamma', 
+    'DYToLL' : 'DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8',
+
 }
 # runtype_to_sample = {
 #     'DYToLL' : 'RelValDYToLL_M_50_14TeV',

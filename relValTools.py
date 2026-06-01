@@ -102,6 +102,7 @@ def getFilesFromDAS(release, runtype, globalTag, miniaod, manual_query="", exact
 
     #files = ["root://cms-xrd-global.cern.ch/" + s.strip() for s in result.splitlines()]
     files = ["root://xrootd-cms.infn.it/" + s.strip() for s in result.splitlines()]
+    #files = ["root://cmsxrootd.fnal.gov/" + s.strip() for s in result.splitlines()]
 
     print ("files:", files)
     return files

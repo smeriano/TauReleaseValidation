@@ -47,6 +47,29 @@ all_tau_ids = [
     ('photonPtSumOutsideSignalCone', float),
     ('decayModeFinding', int),
     ('decayModeFindingNewDMs', int),
+
+    ('byUTagCHSDecayMode', int),
+    ('byUTagCHSVSjetraw', float),
+    ('byUTagCHSVSeraw', float),
+    ('byUTagCHSVSmuraw', float),
+    ('byUTagCHSPtCorr', float),
+    ('byUTagCHSQConf', float),
+    ('byUTagCHSProb1h0pi0', float),
+    ('byUTagCHSProb1h1pi0', float),
+    ('byUTagCHSProb1h2pi0', float),
+    ('byUTagCHSProb3h0pi0', float),
+    ('byUTagCHSProb3h1pi0', float),
+    ('byUTagPUPPIDecayMode', int),
+    ('byUTagPUPPIVSjetraw', float),
+    ('byUTagPUPPIVSeraw', float),
+    ('byUTagPUPPIVSmuraw', float),
+    ('byUTagPUPPIPtCorr', float),
+    ('byUTagPUPPIQConf', float),
+    ('byUTagPUPPIProb1h0pi0', float),
+    ('byUTagPUPPIProb1h1pi0', float),
+    ('byUTagPUPPIProb1h2pi0', float),
+    ('byUTagPUPPIProb3h0pi0', float),
+    ('byUTagPUPPIProb3h1pi0', float),
 ]
 
 lepton_tau_ids = [
@@ -83,16 +106,23 @@ tau_ids = {
     'deepTauIDv2p1VSe':create_tau_ids('DeepTau2017v2p1VSe', 8),
     'deepTauIDv2p1VSmu':create_tau_ids('DeepTau2017v2p1VSmu', 4),
     'deepTauIDv2p1VSjet':create_tau_ids('DeepTau2017v2p1VSjet', 8),
-    'deepTauIDv2p5VSe':create_tau_ids('DeepTau2017v2p5VSe', 8),
-    'deepTauIDv2p5VSmu':create_tau_ids('DeepTau2017v2p5VSmu', 4),
-    'deepTauIDv2p5VSjet':create_tau_ids('DeepTau2017v2p5VSjet', 8),
-    '2017v2':create_tau_ids('IsolationMVArun2017v2DBoldDMwLT2017'),
-    '2017v1':create_tau_ids('IsolationMVArun2017v1DBoldDMwLT2017'),
-    '2016v1':create_tau_ids('IsolationMVArun2v1DBoldDMwLT2016', 6),
-    'newDM2016v1':create_tau_ids('IsolationMVArun2v1DBnewDMwLT2016', 6),
-    'dR0p32017v2':create_tau_ids('IsolationMVArun2017v2DBoldDMdR0p3wLT2017')
+    'deepTauIDv2p5VSe':create_tau_ids('DeepTau2018v2p5VSe', 8),
+    'deepTauIDv2p5VSmu':create_tau_ids('DeepTau2018v2p5VSmu', 4),
+    'deepTauIDv2p5VSjet':create_tau_ids('DeepTau2018v2p5VSjet', 8),
+    #'2017v2':create_tau_ids('IsolationMVArun2017v2DBoldDMwLT2017'),
+    #'2017v1':create_tau_ids('IsolationMVArun2017v1DBoldDMwLT2017'),
+    #'2016v1':create_tau_ids('IsolationMVArun2v1DBoldDMwLT2016', 6),
+    #'newDM2016v1':create_tau_ids('IsolationMVArun2v1DBnewDMwLT2016', 6),
+    #'dR0p32017v2':create_tau_ids('IsolationMVArun2017v2DBoldDMdR0p3wLT2017')
 }
 
 def fill_tau_ids(avd, tau, tau_id_names):
-    for (tau_id, _) in tau_id_names:
-        avd['tau_'+tau_id].fill(tau.tauID(tau_id))
+    for (tau_id, typ) in tau_id_names:
+        # pat::Tau.tauID throws if missing; guard it
+        val = -1 if typ is int else -1.0
+        try:
+            if hasattr(tau, 'isTauIDAvailable') and tau.isTauIDAvailable(tau_id):
+                val = tau.tauID(tau_id)
+        except Exception:
+            pass
+        avd['tau_' + tau_id].fill(val)
