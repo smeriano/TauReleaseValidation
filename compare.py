@@ -27,6 +27,7 @@ gStyle.SetOptTitle(0)
 RuntypeOptions = namedtuple("RuntypeOptions", "tlabel xlabel xlabel_eta")
 options_dict = {
     'Data': RuntypeOptions(tlabel='Data', xlabel='jet p_{T} (GeV)', xlabel_eta='jet #eta'),
+    'DataTau': RuntypeOptions(tlabel='DataTau', xlabel='tau p_{T} (GeV)', xlabel_eta='tau #eta'),
     'DYToLL': RuntypeOptions(tlabel='Z #rightarrow ll', xlabel='gen. lepton p_{T}^{vis} (GeV)', xlabel_eta='gen. lepton #eta^{vis}'),
     'ZTT': RuntypeOptions(tlabel='Z #rightarrow #tau#tau', xlabel='gen. tau p_{T}^{vis} (GeV)', xlabel_eta='gen. tau #eta^{vis}'),
     'ZEE': RuntypeOptions(tlabel='Z #rightarrow ee', xlabel='electron p_{T} (GeV)', xlabel_eta='electron #eta'),
