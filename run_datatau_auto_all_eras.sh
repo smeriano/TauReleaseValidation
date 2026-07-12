@@ -14,15 +14,19 @@ set -uo pipefail
 #   compare.py --runtype DataTau
 # ============================================================
 
-TARGET_REL="CMSSW_17_0_0_pre1"
-REF_REL="CMSSW_16_1_0_pre3"
+TARGET_REL="CMSSW_17_0_0_pre2"
+REF_REL="CMSSW_17_0_0_pre1"
+
+TARGET_GT="161X_dataRun3_Prompt_frozen260520_v1"
+REF_GT="160X_dataRun3_Prompt_frozen260223_v1"
 
 TARGET_VER="${TARGET_REL#CMSSW_}"
 REF_VER="${REF_REL#CMSSW_}"
 
-GT="dummy"
 
-DEFAULT_ERAS=(2024G 2024H 2024I)
+
+
+DEFAULT_ERAS=(2025B 2025C 2025D 2025E 2025F 2025G)
 
 if [[ "$#" -gt 0 ]]; then
   ERAS=("$@")
@@ -68,6 +72,7 @@ python3 -m py_compile produceTauValTree.py compare.py make_datatau_mccompare_inp
 list_datatau_datasets () {
   local release="$1"
   local era="$2"
+  local preferred_token="${3:-}"
 
   local query1="dataset=/Tau/${release}-*${era}*Data_RelVal_Tau${era}*/MINIAOD"
   local query2="dataset=/Tau/${release}-*${era}*/MINIAOD"
@@ -89,12 +94,13 @@ list_datatau_datasets () {
   echo "Candidates for ${release} ${era}:" >&2
   printf '  %s\n' "${cands[@]}" >&2
 
-  CANDS="$(printf '%s\n' "${cands[@]}")" python3 - "${era}" <<'PYSEL'
+  CANDS="$(printf '%s\n' "${cands[@]}")" PREFERRED_TOKEN="${preferred_token}" python3 - "${era}" <<'PYSEL'
 import os
 import sys
 import re
 
 era = sys.argv[1]
+preferred_token = os.environ.get("PREFERRED_TOKEN", "")
 cands = [line.strip() for line in os.environ.get("CANDS", "").splitlines() if line.strip()]
 
 if not cands:
@@ -132,6 +138,7 @@ def campaign_rank(d):
 def score(d):
     # Lower tuple is better.
     return (
+        0 if preferred_token and preferred_token in d else 1,
         0 if f"Data_RelVal_Tau{era}" in d else 1,
         campaign_rank(d),
         0 if "dataRun3" in d else 1,
@@ -272,7 +279,14 @@ produce_one () {
   local era="$3"
   local dataset="$4"
 
-  local local_file="Myroot_${release}_${GT}_DataTau_${era}.root"
+  local gt
+  if [[ "${role}" == "target" ]]; then
+    gt="${TARGET_GT}"
+  else
+    gt="${REF_GT}"
+  fi
+
+  local local_file="Myroot_${release}_${gt}_DataTau_${era}.root"
   local out_file="${ROOT_DIR}/${local_file}"
   local log_file="${LOG_DIR}/produce_${role}_DataTau_${era}.log"
   local dataset_meta="${out_file}.dataset.txt"
@@ -280,6 +294,7 @@ produce_one () {
   echo
   echo "Producing ${role} DataTau for ${era}"
   echo "  release: ${release}"
+  echo "  GT:      ${gt}"
   echo "  dataset: ${dataset}"
   echo "  output:  ${out_file}"
 
@@ -309,7 +324,7 @@ produce_one () {
 
   python3 produceTauValTree.py \
     --release "${release}" \
-    --globalTag "${GT}" \
+    --globalTag "${gt}" \
     --runtype DataTau \
     -s das \
     --exact "${dataset}" \
@@ -451,19 +466,19 @@ run_compare () {
   echo
   echo "Running MC-style compare.py for DataTau ${era}"
 
-  rm -f "Myroot_${TARGET_REL}_${GT}_DataTau.root"
-  rm -f "Myroot_${REF_REL}_${GT}_DataTau.root"
+  rm -f "Myroot_${TARGET_REL}_${TARGET_GT}_DataTau.root"
+  rm -f "Myroot_${REF_REL}_${REF_GT}_DataTau.root"
 
-  ln -s "$(readlink -f "${mc_target}")" "Myroot_${TARGET_REL}_${GT}_DataTau.root"
-  ln -s "$(readlink -f "${mc_ref}")" "Myroot_${REF_REL}_${GT}_DataTau.root"
+  ln -s "$(readlink -f "${mc_target}")" "Myroot_${TARGET_REL}_${TARGET_GT}_DataTau.root"
+  ln -s "$(readlink -f "${mc_ref}")" "Myroot_${REF_REL}_${REF_GT}_DataTau.root"
 
   rm -rf compare_DataTau missing_leaves.txt "${outdir}" "${tarfile}"
 
   python3 compare.py \
     --releases "${TARGET_VER}" "${REF_VER}" \
     --inputfiles \
-      "Myroot_${TARGET_REL}_${GT}_DataTau.root" \
-      "Myroot_${REF_REL}_${GT}_DataTau.root" \
+      "Myroot_${TARGET_REL}_${TARGET_GT}_DataTau.root" \
+      "Myroot_${REF_REL}_${REF_GT}_DataTau.root" \
     --runtype DataTau \
     2>&1 | tee "${logfile}"
 
@@ -505,10 +520,10 @@ for ERA in "${ERAS[@]}"; do
   echo "DataTau era ${ERA}"
   echo "========================================================================================"
 
-  mapfile -t TARGET_CANDS < <(list_datatau_datasets "${TARGET_REL}" "${ERA}")
+  mapfile -t TARGET_CANDS < <(list_datatau_datasets "${TARGET_REL}" "${ERA}" "${TARGET_GT}")
   rc_target_pick=$?
 
-  mapfile -t REF_CANDS < <(list_datatau_datasets "${REF_REL}" "${ERA}")
+  mapfile -t REF_CANDS < <(list_datatau_datasets "${REF_REL}" "${ERA}" "${REF_GT}")
   rc_ref_pick=$?
 
   if [[ "${rc_target_pick}" -ne 0 || "${rc_ref_pick}" -ne 0 || "${#TARGET_CANDS[@]}" -eq 0 || "${#REF_CANDS[@]}" -eq 0 ]]; then
@@ -546,8 +561,8 @@ for ERA in "${ERAS[@]}"; do
     continue
   fi
 
-  ORIG_TARGET="${ROOT_DIR}/Myroot_${TARGET_REL}_${GT}_DataTau_${ERA}.root"
-  ORIG_REF="${ROOT_DIR}/Myroot_${REF_REL}_${GT}_DataTau_${ERA}.root"
+  ORIG_TARGET="${ROOT_DIR}/Myroot_${TARGET_REL}_${TARGET_GT}_DataTau_${ERA}.root"
+  ORIG_REF="${ROOT_DIR}/Myroot_${REF_REL}_${REF_GT}_DataTau_${ERA}.root"
 
   MC_TARGET="${MCROOT_DIR}/target_DataTau_${ERA}_mccompare.root"
   MC_REF="${MCROOT_DIR}/ref_DataTau_${ERA}_mccompare.root"
