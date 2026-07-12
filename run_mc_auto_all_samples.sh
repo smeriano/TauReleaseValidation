@@ -16,6 +16,19 @@ OUTDIR="tau_relval_auto_outputs_MC_D121"
 RUNTYPES=(ZMM ZEE ZTT TTbar)
 PILEUPS=(noPU PU)
 
+MVAIDS=(
+  deepTauIDv2p5VSe
+  deepTauIDv2p5VSmu
+  deepTauIDv2p5VSjet
+)
+
+# Set FORCE=1 to regenerate ROOT files made before all three IDs were enabled.
+FORCE="${FORCE:-0}"
+FORCE_ARGS=()
+if [[ "${FORCE}" == "1" ]]; then
+  FORCE_ARGS+=(--force)
+fi
+
 echo
 echo "============================================================"
 echo "Campaign configuration"
@@ -27,6 +40,8 @@ echo "Reference GT:      ${REF_GT}"
 echo "Geometry:          ${GEOM}"
 echo "Dry-run outdir:    ${DRY_OUTDIR}"
 echo "Real-run outdir:   ${OUTDIR}"
+echo "DeepTau IDs:       ${MVAIDS[*]}"
+echo "Force regeneration: ${FORCE}"
 
 # ============================================================
 # Move into the target release area and set up the environment
@@ -57,6 +72,9 @@ python3 tau_relval_auto_compare.py \
   --pileups "${PILEUPS[@]}" \
   --target-contains "${GEOM}" \
   --ref-contains "${GEOM}" \
+  --mvaid "${MVAIDS[0]}" \
+  --mvaid "${MVAIDS[1]}" \
+  --mvaid "${MVAIDS[2]}" \
   --dry-run \
   --outdir "${DRY_OUTDIR}"
 
@@ -71,7 +89,11 @@ python3 tau_relval_auto_compare.py \
   --pileups "${PILEUPS[@]}" \
   --target-contains "${GEOM}" \
   --ref-contains "${GEOM}" \
+  --mvaid "${MVAIDS[0]}" \
+  --mvaid "${MVAIDS[1]}" \
+  --mvaid "${MVAIDS[2]}" \
   --keep-going \
+  "${FORCE_ARGS[@]}" \
   --outdir "${OUTDIR}"
 
 # ============================================================

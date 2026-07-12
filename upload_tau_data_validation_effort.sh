@@ -1,14 +1,64 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SRC="/eos/user/s/smeriano/UCLouvain/TAU_RELVAL/CMSSW_17_0_0_pre2/src/TauReleaseValidation/tau_data_relval_outputs/plots"
+###############################################################################
+# Usage
+###############################################################################
+
+if [ "$#" -ne 2 ]; then
+  echo "Usage:"
+  echo "  $0 TARGET_RELEASE REF_RELEASE"
+  echo
+  echo "Example:"
+  echo "  $0 16_1_0_pre3 16_1_0_pre2"
+  echo
+  echo "The CMSSW_ prefix is optional. For example, this also works:"
+  echo "  $0 CMSSW_16_1_0_pre3 CMSSW_16_1_0_pre2"
+  exit 1
+fi
+
+# Run like
+# chmod +x upload_tau_data_comparison.sh
+
+# ./upload_tau_data_comparison.sh \
+#   16_1_0_pre3 \
+#   16_1_0_pre2
+
+###############################################################################
+# Release configuration
+###############################################################################
+
+TARGET_RELEASE="${1#CMSSW_}"
+REF_RELEASE="${2#CMSSW_}"
+
+TARGET_CMSSW="CMSSW_${TARGET_RELEASE}"
+REF_CMSSW="CMSSW_${REF_RELEASE}"
+
+###############################################################################
+# Paths
+###############################################################################
+
+SRC="/eos/user/s/smeriano/UCLouvain/TAU_RELVAL/${TARGET_CMSSW}/src/TauReleaseValidation/tau_data_relval_outputs/plots"
 
 WWW="/eos/user/s/smeriano/www"
 TAU_ROOT="${WWW}/TauValidationEffort"
-DEST="${TAU_ROOT}/17_0_0_pre2_2025Data_vs_17_0_0_pre1_2025Data"
+DEST="${TAU_ROOT}/${TARGET_RELEASE}_Data_vs_${REF_RELEASE}_Data"
 
-echo "Source:      ${SRC}"
-echo "Destination: ${DEST}"
+###############################################################################
+# Summary
+###############################################################################
+
+echo "Target release:    ${TARGET_RELEASE}"
+echo "Reference release: ${REF_RELEASE}"
+echo "Target CMSSW:      ${TARGET_CMSSW}"
+echo "Reference CMSSW:   ${REF_CMSSW}"
+echo
+echo "Source:            ${SRC}"
+echo "Destination:       ${DEST}"
+
+###############################################################################
+# Validate source
+###############################################################################
 
 if [ ! -d "${SRC}" ]; then
   echo "ERROR: source does not exist:"
@@ -18,25 +68,53 @@ fi
 
 mkdir -p "${DEST}"
 
+###############################################################################
+# Copy plots
+###############################################################################
+
 echo
 echo "Copying plot folders with web-safe permissions..."
+
 rsync -a --delete \
   --no-perms \
   --chmod=D755,F644 \
   "${SRC}/" \
   "${DEST}/"
 
+###############################################################################
+# Export paths and release information for the Python index generator
+###############################################################################
+
+export WWW
+export TAU_ROOT
+export DEST
+export TARGET_RELEASE
+export REF_RELEASE
+export TARGET_CMSSW
+export REF_CMSSW
+
+###############################################################################
+# Generate recursive index pages
+###############################################################################
+
 echo
 echo "Generating recursive index.html pages..."
+
 python3 - <<'PY'
 from pathlib import Path
 import html
 import os
 import time
 
-WWW = Path("/eos/user/s/smeriano/www")
-TAU_ROOT = WWW / "TauValidationEffort"
-DEST = TAU_ROOT / "17_0_0_pre2_2025Data_vs_17_0_0_pre1_2025Data"
+WWW = Path(os.environ["WWW"])
+TAU_ROOT = Path(os.environ["TAU_ROOT"])
+DEST = Path(os.environ["DEST"])
+
+TARGET_RELEASE = os.environ["TARGET_RELEASE"]
+REF_RELEASE = os.environ["REF_RELEASE"]
+
+TARGET_CMSSW = os.environ["TARGET_CMSSW"]
+REF_CMSSW = os.environ["REF_CMSSW"]
 
 STYLE = r"""
 body {
@@ -210,45 +288,74 @@ def write_index(path: Path):
     if subdirs or pngs:
         lines.append("")
         lines.append('<div class="filter-box">')
-        lines.append('<input type="text" id="filterInput" onkeyup="filterItems()" placeholder="Filter folders / plots...">')
+        lines.append(
+            '<input type="text" id="filterInput" '
+            'onkeyup="filterItems()" '
+            'placeholder="Filter folders / plots...">'
+        )
         lines.append("</div>")
 
     if subdirs:
         lines.append("<h2>Subdirs</h2>")
         lines.append('<div class="grid">')
+
         for d in subdirs:
             name = d.name
             esc = html.escape(name)
-            lines.append(f'<div class="folder-card filter-item" data-name="{esc}">')
+
+            lines.append(
+                f'<div class="folder-card filter-item" data-name="{esc}">'
+            )
             lines.append(f'<h3><a href="{esc}/">[{esc}]</a></h3>')
             lines.append("</div>")
+
         lines.append("</div>")
 
     if pngs:
         lines.append("<h2>Plots</h2>")
         lines.append('<div class="grid">')
+
         for png in pngs:
             name = png.name
             esc = html.escape(name)
             pdf = png.with_suffix(".pdf")
+
             lines.append(f'<div class="pic filter-item" data-name="{esc}">')
             lines.append(f"<h3>{esc}</h3>")
-            lines.append(f'<a href="{esc}"><img src="{esc}" alt="{esc}"></a>')
+            lines.append(
+                f'<a href="{esc}">'
+                f'<img src="{esc}" alt="{esc}">'
+                f"</a>"
+            )
+
             if pdf.exists():
                 pdf_name = html.escape(pdf.name)
-                lines.append(f'<p class="small"><a href="{pdf_name}">PDF version</a></p>')
+                lines.append(
+                    f'<p class="small">'
+                    f'<a href="{pdf_name}">PDF version</a>'
+                    f"</p>"
+                )
+
             lines.append("</div>")
+
         lines.append("</div>")
 
     if not subdirs and not pngs:
-        lines.append('<p class="small">No subdirectories or PNG plots found here.</p>')
+        lines.append(
+            '<p class="small">'
+            "No subdirectories or PNG plots found here."
+            "</p>"
+        )
 
     lines.append("")
     lines.append("</body>")
     lines.append("</html>")
     lines.append("")
 
-    (path / "index.html").write_text("\n".join(lines), encoding="utf-8")
+    (path / "index.html").write_text(
+        "\n".join(lines),
+        encoding="utf-8",
+    )
 
 # Generate TauValidationEffort/index.html and all nested pages
 for root, dirs, files in os.walk(TAU_ROOT):
@@ -280,27 +387,56 @@ if main_index.exists():
         insert_pos = text.rfind("</div>", 0, body_pos)
 
         if insert_pos == -1:
-            raise RuntimeError("Could not find the final grid </div> in main index.html")
+            raise RuntimeError(
+                "Could not find the final grid </div> in main index.html"
+            )
 
-        text = text[:insert_pos] + "\n" + card + "\n" + text[insert_pos:]
+        text = (
+            text[:insert_pos]
+            + "\n"
+            + card
+            + "\n"
+            + text[insert_pos:]
+        )
+
         main_index.write_text(text, encoding="utf-8")
-        print(f"Updated main index.html. Backup saved as {backup}")
+
+        print(
+            f"Updated main index.html. "
+            f"Backup saved as {backup}"
+        )
     else:
-        print("Main index.html already contains TauValidationEffort. Not adding duplicate.")
+        print(
+            "Main index.html already contains TauValidationEffort. "
+            "Not adding duplicate."
+        )
 else:
     print(f"WARNING: main index does not exist: {main_index}")
 
+print(
+    "Generated comparison index for "
+    f"{TARGET_CMSSW} versus {REF_CMSSW}"
+)
 print("Done.")
 PY
 
+###############################################################################
+# Fix permissions
+###############################################################################
+
 echo
 echo "Fixing permissions..."
+
 find "${TAU_ROOT}" -type d -exec chmod 755 {} \;
 find "${TAU_ROOT}" -type f -exec chmod 644 {} \;
 
 if [ -f "${WWW}/index.html" ]; then
   chmod 644 "${WWW}/index.html"
 fi
+
+###############################################################################
+# Checks
+###############################################################################
 
 echo
 echo "Checking copied folders:"
@@ -310,10 +446,14 @@ echo
 echo "Checking nested index files:"
 find "${DEST}" -maxdepth 3 -type f -name index.html | head -30
 
+###############################################################################
+# Final output
+###############################################################################
+
 echo
 echo "Created:"
 echo "  ${DEST}"
 
 echo
 echo "Open:"
-echo "  https://spyros.web.cern.ch/TauValidationEffort/17_0_0_pre2_2025Data_vs_17_0_0_pre1_2025Data/"
+echo "  https://spyros.web.cern.ch/TauValidationEffort/${TARGET_RELEASE}_Data_vs_${REF_RELEASE}_Data/"

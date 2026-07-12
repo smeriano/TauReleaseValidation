@@ -1,14 +1,101 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SRC="/eos/user/s/smeriano/UCLouvain/TAU_RELVAL/CMSSW_17_0_0_pre2/src/TauReleaseValidation/tau_relval_auto_outputs_MC_D121/plots"
+###############################################################################
+# Default release configuration
+#
+# These defaults are used when no command-line arguments are provided.
+###############################################################################
+
+DEFAULT_TARGET_REL="CMSSW_16_1_0_pre2"
+DEFAULT_REF_REL="CMSSW_16_1_0_pre1"
+
+###############################################################################
+# Usage
+###############################################################################
+
+usage() {
+  echo "Usage:"
+  echo "  $0 [TARGET_RELEASE] [REF_RELEASE]"
+  echo
+  echo "Examples:"
+  echo "  $0"
+  echo
+  echo "  $0 CMSSW_17_0_0_pre2 CMSSW_17_0_0_pre1"
+  echo
+  echo "  $0 17_0_0_pre2 17_0_0_pre1"
+  echo
+  echo "If no arguments are provided, the defaults inside the script are used:"
+  echo "  TARGET_RELEASE=${DEFAULT_TARGET_REL}"
+  echo "  REF_RELEASE=${DEFAULT_REF_REL}"
+}
+
+if [ "$#" -gt 2 ]; then
+  usage
+  exit 1
+fi
+
+###############################################################################
+# Read releases
+###############################################################################
+
+TARGET_REL="${1:-${DEFAULT_TARGET_REL}}"
+REF_REL="${2:-${DEFAULT_REF_REL}}"
+
+###############################################################################
+# Normalize CMSSW release names
+#
+# Both of these forms are accepted:
+#
+#   CMSSW_17_0_0_pre2
+#   17_0_0_pre2
+###############################################################################
+
+if [[ "${TARGET_REL}" != CMSSW_* ]]; then
+  TARGET_REL="CMSSW_${TARGET_REL}"
+fi
+
+if [[ "${REF_REL}" != CMSSW_* ]]; then
+  REF_REL="CMSSW_${REF_REL}"
+fi
+
+###############################################################################
+# Release tags without the CMSSW_ prefix
+#
+# Example:
+#
+#   TARGET_REL=CMSSW_17_0_0_pre2
+#   TARGET_TAG=17_0_0_pre2
+###############################################################################
+
+TARGET_TAG="${TARGET_REL#CMSSW_}"
+REF_TAG="${REF_REL#CMSSW_}"
+
+###############################################################################
+# Paths
+###############################################################################
+
+SRC="/eos/user/s/smeriano/UCLouvain/TAU_RELVAL/${TARGET_REL}/src/TauReleaseValidation/tau_relval_auto_outputs_MC_D121/plots"
 
 WWW="/eos/user/s/smeriano/www"
 TAU_ROOT="${WWW}/TauValidationEffort"
-DEST="${TAU_ROOT}/17_0_0_pre2_Phase2_D121_vs_17_0_0_pre1_Phase2_D121"
+DEST="${TAU_ROOT}/${TARGET_TAG}_Phase2_D121_vs_${REF_TAG}_Phase2_D121"
 
-echo "Source:      ${SRC}"
-echo "Destination: ${DEST}"
+###############################################################################
+# Print configuration
+###############################################################################
+
+echo "Target release:    ${TARGET_REL}"
+echo "Reference release: ${REF_REL}"
+echo "Target tag:        ${TARGET_TAG}"
+echo "Reference tag:     ${REF_TAG}"
+echo
+echo "Source:            ${SRC}"
+echo "Destination:       ${DEST}"
+
+###############################################################################
+# Validate source
+###############################################################################
 
 if [ ! -d "${SRC}" ]; then
   echo "ERROR: source does not exist:"
@@ -18,25 +105,53 @@ fi
 
 mkdir -p "${DEST}"
 
+###############################################################################
+# Copy plots
+###############################################################################
+
 echo
 echo "Copying plot folders with web-safe permissions..."
+
 rsync -a --delete \
   --no-perms \
   --chmod=D755,F644 \
   "${SRC}/" \
   "${DEST}/"
 
+###############################################################################
+# Export variables for the embedded Python script
+###############################################################################
+
+export WWW
+export TAU_ROOT
+export DEST
+export TARGET_REL
+export REF_REL
+export TARGET_TAG
+export REF_TAG
+
+###############################################################################
+# Generate recursive index pages
+###############################################################################
+
 echo
 echo "Generating recursive index.html pages..."
+
 python3 - <<'PY'
 from pathlib import Path
 import html
 import os
 import time
 
-WWW = Path("/eos/user/s/smeriano/www")
-TAU_ROOT = WWW / "TauValidationEffort"
-DEST = TAU_ROOT / "17_0_0_pre2_Phase2_D121_vs_17_0_0_pre1_Phase2_D121"
+WWW = Path(os.environ["WWW"])
+TAU_ROOT = Path(os.environ["TAU_ROOT"])
+DEST = Path(os.environ["DEST"])
+
+TARGET_REL = os.environ["TARGET_REL"]
+REF_REL = os.environ["REF_REL"]
+
+TARGET_TAG = os.environ["TARGET_TAG"]
+REF_TAG = os.environ["REF_TAG"]
 
 STYLE = r"""
 body {
@@ -210,45 +325,74 @@ def write_index(path: Path):
     if subdirs or pngs:
         lines.append("")
         lines.append('<div class="filter-box">')
-        lines.append('<input type="text" id="filterInput" onkeyup="filterItems()" placeholder="Filter folders / plots...">')
+        lines.append(
+            '<input type="text" id="filterInput" '
+            'onkeyup="filterItems()" '
+            'placeholder="Filter folders / plots...">'
+        )
         lines.append("</div>")
 
     if subdirs:
         lines.append("<h2>Subdirs</h2>")
         lines.append('<div class="grid">')
+
         for d in subdirs:
             name = d.name
             esc = html.escape(name)
-            lines.append(f'<div class="folder-card filter-item" data-name="{esc}">')
+
+            lines.append(
+                f'<div class="folder-card filter-item" data-name="{esc}">'
+            )
             lines.append(f'<h3><a href="{esc}/">[{esc}]</a></h3>')
             lines.append("</div>")
+
         lines.append("</div>")
 
     if pngs:
         lines.append("<h2>Plots</h2>")
         lines.append('<div class="grid">')
+
         for png in pngs:
             name = png.name
             esc = html.escape(name)
             pdf = png.with_suffix(".pdf")
+
             lines.append(f'<div class="pic filter-item" data-name="{esc}">')
             lines.append(f"<h3>{esc}</h3>")
-            lines.append(f'<a href="{esc}"><img src="{esc}" alt="{esc}"></a>')
+            lines.append(
+                f'<a href="{esc}">'
+                f'<img src="{esc}" alt="{esc}">'
+                f"</a>"
+            )
+
             if pdf.exists():
                 pdf_name = html.escape(pdf.name)
-                lines.append(f'<p class="small"><a href="{pdf_name}">PDF version</a></p>')
+                lines.append(
+                    f'<p class="small">'
+                    f'<a href="{pdf_name}">PDF version</a>'
+                    f"</p>"
+                )
+
             lines.append("</div>")
+
         lines.append("</div>")
 
     if not subdirs and not pngs:
-        lines.append('<p class="small">No subdirectories or PNG plots found here.</p>')
+        lines.append(
+            '<p class="small">'
+            "No subdirectories or PNG plots found here."
+            "</p>"
+        )
 
     lines.append("")
     lines.append("</body>")
     lines.append("</html>")
     lines.append("")
 
-    (path / "index.html").write_text("\n".join(lines), encoding="utf-8")
+    (path / "index.html").write_text(
+        "\n".join(lines),
+        encoding="utf-8",
+    )
 
 # Generate TauValidationEffort/index.html and all nested pages
 for root, dirs, files in os.walk(TAU_ROOT):
@@ -280,27 +424,57 @@ if main_index.exists():
         insert_pos = text.rfind("</div>", 0, body_pos)
 
         if insert_pos == -1:
-            raise RuntimeError("Could not find the final grid </div> in main index.html")
+            raise RuntimeError(
+                "Could not find the final grid </div> in main index.html"
+            )
 
-        text = text[:insert_pos] + "\n" + card + "\n" + text[insert_pos:]
+        text = (
+            text[:insert_pos]
+            + "\n"
+            + card
+            + "\n"
+            + text[insert_pos:]
+        )
+
         main_index.write_text(text, encoding="utf-8")
-        print(f"Updated main index.html. Backup saved as {backup}")
+
+        print(
+            f"Updated main index.html. "
+            f"Backup saved as {backup}"
+        )
     else:
-        print("Main index.html already contains TauValidationEffort. Not adding duplicate.")
+        print(
+            "Main index.html already contains TauValidationEffort. "
+            "Not adding duplicate."
+        )
 else:
     print(f"WARNING: main index does not exist: {main_index}")
 
+print(
+    "Generated Phase-2 D121 comparison index for "
+    f"{TARGET_REL} versus {REF_REL}"
+)
+print(f"Destination: {DEST}")
 print("Done.")
 PY
 
+###############################################################################
+# Fix permissions
+###############################################################################
+
 echo
 echo "Fixing permissions..."
+
 find "${TAU_ROOT}" -type d -exec chmod 755 {} \;
 find "${TAU_ROOT}" -type f -exec chmod 644 {} \;
 
 if [ -f "${WWW}/index.html" ]; then
   chmod 644 "${WWW}/index.html"
 fi
+
+###############################################################################
+# Checks
+###############################################################################
 
 echo
 echo "Checking copied folders:"
@@ -310,10 +484,14 @@ echo
 echo "Checking nested index files:"
 find "${DEST}" -maxdepth 3 -type f -name index.html | head -30
 
+###############################################################################
+# Final output
+###############################################################################
+
 echo
 echo "Created:"
 echo "  ${DEST}"
 
 echo
 echo "Open:"
-echo "  https://spyros.web.cern.ch/TauValidationEffort/17_0_0_pre2_Phase2_D121_vs_17_0_0_pre1_Phase2_D121/"
+echo "  https://spyros.web.cern.ch/TauValidationEffort/${TARGET_TAG}_Phase2_D121_vs_${REF_TAG}_Phase2_D121/"

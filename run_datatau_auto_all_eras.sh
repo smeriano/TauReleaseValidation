@@ -14,18 +14,18 @@ set -uo pipefail
 #   compare.py --runtype DataTau
 # ============================================================
 
-TARGET_REL="CMSSW_16_1_0_pre2"
-REF_REL="CMSSW_16_1_0_pre1"
+TARGET_REL="CMSSW_16_1_0_pre3"
+REF_REL="CMSSW_16_1_0_pre2"
 
 # ============================================================
 # GlobalTags split by data-taking year
 # ============================================================
 
-TARGET_GT_2024="150X_dataRun3_v6"
-REF_GT_2024="150X_dataRun3_v6"
+TARGET_GT_2024=""
+REF_GT_2024=""
 
-TARGET_GT_2025="150X_dataRun3_Prompt_frozen250613_v1"
-REF_GT_2025="150X_dataRun3_Prompt_frozen250613_v1"
+TARGET_GT_2025="160X_dataRun3_Prompt_frozen260223_v1"
+REF_GT_2025="150X_dataRun3_HLT_frozen250613_v1"
 
 # These are assigned for each ERA inside the main loop.
 TARGET_GT=""
@@ -55,7 +55,7 @@ set_globaltags_for_era () {
 }
 
 
-DEFAULT_ERAS=(2024G 2024H 2024I 2025B 2025C 2025D 2025E 2025F 2025G)
+DEFAULT_ERAS=(2025B 2025C 2025D 2025E 2025F 2025G)
 
 if [[ "$#" -gt 0 ]]; then
   ERAS=("$@")
@@ -358,9 +358,10 @@ produce_one () {
     -s das \
     --exact "${dataset}" \
     -o "${local_file}" \
-    --mvaid deepTauIDv2p5VSe \
-    --mvaid deepTauIDv2p5VSmu \
-    --mvaid deepTauIDv2p5VSjet \
+    --mvaid \
+      deepTauIDv2p5VSe \
+      deepTauIDv2p5VSmu \
+      deepTauIDv2p5VSjet \
     2>&1 | tee "${log_file}"
 
   local rc=${PIPESTATUS[0]}

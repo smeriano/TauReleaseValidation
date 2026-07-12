@@ -333,8 +333,9 @@ def produce(args: argparse.Namespace, cand: Candidate, side: str, out_root: Path
     cmd = ["python3", "produceTauValTree.py", "--release", cand.release, "--globalTag", args.produce_gt, "--runtype", cand.runtype, "-s", "das", "--exact", cand.dataset, "-o", default_name.name]
     if args.max_events is not None:
         cmd += ["-n", str(args.max_events)]
-    for mvaid in args.mvaid:
-        cmd += ["--mvaid", mvaid]
+    # produceTauValTree.py expects one --mvaid followed by all requested IDs.
+    if args.mvaid:
+        cmd += ["--mvaid", *args.mvaid]
 
     log = args.outdir / "logs" / f"produce_{side}_{cand.runtype}_{cand.pileup}__{candidate_tag(cand)}.log"
     rc = run(cmd, log=log, check=False)

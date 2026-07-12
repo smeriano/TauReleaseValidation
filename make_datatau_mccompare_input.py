@@ -5,14 +5,6 @@ import ROOT
 
 ROOT.gROOT.SetBatch(True)
 
-# Placeholder WP thresholds only for producing the same compare.py structure.
-# Replace with official v2p5 thresholds if needed.
-WP = {
-    "Loose":  0.20,
-    "Medium": 0.50,
-    "Tight":  0.80,
-}
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input", required=True)
@@ -46,14 +38,13 @@ def main():
     if "tau_dm" in cols:
         df = dor(df, "tau_gendm", "tau_dm")
 
-    # Add DeepTau WP leaves expected by variables.py.
-    for wp, thr in WP.items():
-        if "tau_rawDeepTauVSjet" in cols:
-            df = dor(df, f"tau_by{wp}DeepTau2018v2p5VSjet", f"tau_rawDeepTauVSjet > {thr}")
-        if "tau_rawDeepTauVSe" in cols:
-            df = dor(df, f"tau_by{wp}DeepTau2018v2p5VSe", f"tau_rawDeepTauVSe > {thr}")
-        if "tau_rawDeepTauVSmu" in cols:
-            df = dor(df, f"tau_by{wp}DeepTau2018v2p5VSmu", f"tau_rawDeepTauVSmu > {thr}")
+    # Never construct or overwrite DeepTau working points here.
+    # Official decisions must come from produceTauValTree.py / PAT tau IDs.
+    print()
+    print("DeepTau branches preserved unchanged:")
+    for name in sorted(cols):
+        if "deeptau" in name.lower():
+            print("Keep    ", name)
 
     df.Snapshot(args.tree, args.output)
     print("[ok] wrote", args.output)
