@@ -14,19 +14,48 @@ set -uo pipefail
 #   compare.py --runtype DataTau
 # ============================================================
 
-TARGET_REL="CMSSW_17_0_0_pre2"
-REF_REL="CMSSW_17_0_0_pre1"
+TARGET_REL="CMSSW_16_1_0_pre2"
+REF_REL="CMSSW_16_1_0_pre1"
 
-TARGET_GT="161X_dataRun3_Prompt_frozen260520_v1"
-REF_GT="160X_dataRun3_Prompt_frozen260223_v1"
+# ============================================================
+# GlobalTags split by data-taking year
+# ============================================================
+
+TARGET_GT_2024="150X_dataRun3_v6"
+REF_GT_2024="150X_dataRun3_v6"
+
+TARGET_GT_2025="150X_dataRun3_Prompt_frozen250613_v1"
+REF_GT_2025="150X_dataRun3_Prompt_frozen250613_v1"
+
+# These are assigned for each ERA inside the main loop.
+TARGET_GT=""
+REF_GT=""
 
 TARGET_VER="${TARGET_REL#CMSSW_}"
 REF_VER="${REF_REL#CMSSW_}"
 
 
+set_globaltags_for_era () {
+  local era="$1"
+
+  case "${era}" in
+    2024*)
+      TARGET_GT="${TARGET_GT_2024}"
+      REF_GT="${REF_GT_2024}"
+      ;;
+    2025*)
+      TARGET_GT="${TARGET_GT_2025}"
+      REF_GT="${REF_GT_2025}"
+      ;;
+    *)
+      echo "ERROR: no target/reference GlobalTags configured for era ${era}" >&2
+      return 1
+      ;;
+  esac
+}
 
 
-DEFAULT_ERAS=(2025B 2025C 2025D 2025E 2025F 2025G)
+DEFAULT_ERAS=(2024G 2024H 2024I 2025B 2025C 2025D 2025E 2025F 2025G)
 
 if [[ "$#" -gt 0 ]]; then
   ERAS=("$@")
@@ -515,9 +544,16 @@ STATUS="${BASE}/status_DataTau.tsv"
 echo -e "era\tstatus\ttarget_dataset\tref_dataset\ttarget_root\tref_root\tplots" > "${STATUS}"
 
 for ERA in "${ERAS[@]}"; do
+  if ! set_globaltags_for_era "${ERA}"; then
+    echo -e "${ERA}\tFAILED_GT_CONFIGURATION\t\t\t\t\t" >> "${STATUS}"
+    continue
+  fi
+
   echo
   echo "========================================================================================"
   echo "DataTau era ${ERA}"
+  echo "Target GT: ${TARGET_GT}"
+  echo "Ref GT:    ${REF_GT}"
   echo "========================================================================================"
 
   mapfile -t TARGET_CANDS < <(list_datatau_datasets "${TARGET_REL}" "${ERA}" "${TARGET_GT}")

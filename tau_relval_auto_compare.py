@@ -210,6 +210,11 @@ def discover_candidates(args: argparse.Namespace, release: str, runtype: str, pi
     datasets = [d for d in capture(["dasgoclient", f"--query={query}"]) if d.startswith("/")]
     out: list[Candidate] = []
     for ds in datasets:
+        # "*TTbar*" also finds RelValTTbarToDilepton datasets.
+        # Reject them so TTbar always means inclusive TTbar.
+        if runtype == "TTbar" and "dilepton" in primary_dataset(ds).lower():
+            msg(f"[reject] TTbar dilepton dataset: {ds}")
+            continue
         if not allowed_dataset(ds, args.reject_contains, args.require_std):
             continue
         if classify_pileup(ds) != pileup:

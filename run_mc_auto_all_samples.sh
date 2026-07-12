@@ -1,14 +1,9 @@
-cd /eos/home-s/smeriano/UCLouvain/TAU_RELVAL/CMSSW_17_0_0_pre2/src/TauReleaseValidation
-
-# If not already done in this shell:
-cmsenv
-
 # ============================================================
 # Campaign configuration
 # ============================================================
 
-TARGET_REL="CMSSW_17_0_0_pre2"
-REF_REL="CMSSW_17_0_0_pre1"
+TARGET_REL="CMSSW_16_1_0_pre2"
+REF_REL="CMSSW_16_0_0_pre4"
 
 TARGET_GT="150X_mcRun4_realistic_v1"
 REF_GT="150X_mcRun4_realistic_v1"
@@ -34,13 +29,22 @@ echo "Dry-run outdir:    ${DRY_OUTDIR}"
 echo "Real-run outdir:   ${OUTDIR}"
 
 # ============================================================
+# Move into the target release area and set up the environment
+# ============================================================
+
+cd /eos/user/s/smeriano/UCLouvain/TAU_RELVAL/${TARGET_REL}/src/TauReleaseValidation
+
+# If not already done in this shell:
+cmsenv
+
+# ============================================================
 # Sanity checks
 # ============================================================
 
 python3 -m py_compile tau_relval_auto_compare.py
 
-grep -n "dataset_version\|candidate fallback pairs\|Attempt .*for\|fallback" tau_relval_auto_compare.py
-grep -n "DEFAULT_REJECT" tau_relval_auto_compare.py
+# grep -n "dataset_version\|candidate fallback pairs\|Attempt .*for\|fallback" tau_relval_auto_compare.py
+# grep -n "DEFAULT_REJECT" tau_relval_auto_compare.py
 
 # ============================================================
 # Dry-run first: check which pairs it will try
