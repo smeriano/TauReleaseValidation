@@ -395,8 +395,10 @@ def fillSampledic(globaltags, releases, runtype, inputfiles=None):
             sampledict[name] = dict(styles[index % len(styles)])
             basename = os.path.basename(inputf)
             geom = re.search(r'(?:^|_)D(\d+)(?:_|$)', basename)
-            role = ('target' if basename.startswith('target_') else
-                    'reference' if basename.startswith('ref_') else
+            role = ('target sample' if basename.startswith('target_') else
+                    'reference sample' if basename.startswith('ref_') else
+                    'target sample' if index == 0 else
+                    'reference sample' if index == 1 else
                     'sample {}'.format(index + 1))
             release = releases[index] if index < len(releases) else ''
             label = release.removeprefix('CMSSW_')
