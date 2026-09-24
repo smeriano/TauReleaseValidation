@@ -5,6 +5,7 @@ Authors: Yuta Takahashi, Michal Bluj, Jan Steggemann.
 
 import re
 import warnings
+import uuid
 from array import array
 from collections import namedtuple
 
@@ -81,7 +82,7 @@ def make_efficiency_plots(d_sample, var_name, hdict):
                 baseSelection=sel,
                 binning=ptPlotsBinning,
                 xtitle=options_dict[runtype].xlabel,
-                header=f"{rel}{mvaIDname}",
+                header=rdict.get("label", rel),
                 addon=f"{rel}{mvaIDname}",
                 marker=rdict['marker'],
                 col=rdict['col']
@@ -94,7 +95,7 @@ def make_efficiency_plots(d_sample, var_name, hdict):
                 baseSelection=sel,
                 binning=etaPlotsBinning,
                 xtitle=options_dict[runtype].xlabel_eta,
-                header=f"{rel}{mvaIDname}",
+                header=rdict.get("label", rel),
                 addon=f"{rel}{mvaIDname}",
                 marker=rdict['marker'],
                 col=rdict['col']
@@ -191,7 +192,10 @@ def var_plots(d_sample, var_name, hdict):
             return
 
         # Standard histogram
-        hist = TH1F('h_' + var_name + '_' + rel, 'h_' + var_name + '_' + rel, hdict['nbin'], hdict['min'], hdict['max'])
+        gROOT.cd()
+        hist = TH1F('h_var_' + uuid.uuid4().hex, rdict.get('label', rel),
+                    hdict['nbin'], hdict['min'], hdict['max'])
+        hist.SetDirectory(gROOT)
         hist.GetYaxis().SetNdivisions(507)
         hist.SetLineColor(rdict['col'])
         hist.SetLineWidth(rdict['width'])
@@ -199,7 +203,12 @@ def var_plots(d_sample, var_name, hdict):
         hist.Sumw2()
         hist.GetXaxis().SetTitle(hdict['title'])
 
-        tree.Project(hist.GetName(), hdict['var'], hdict['sel'])
+        try:
+            selected = tree.Project(hist.GetName(), hdict['var'], hdict['sel'])
+            if selected < 0:
+                raise RuntimeError('TTree.Project failed for {} in {}'.format(var_name, rel))
+        finally:
+            hist.SetDirectory(0)
 
         if hist.Integral(0, hist.GetNbinsX() + 1) > 0:
             hist.Scale(1. / hist.Integral(0, hist.GetNbinsX() + 1))

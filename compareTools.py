@@ -2,9 +2,10 @@ import os
 import errno
 import pprint
 import uuid
+import re
 
 from ROOT import TH1F, TFile, TCanvas, TPad, TLegend, \
-    TGraphAsymmErrors, TLatex, TMath
+    TGraphAsymmErrors, TLatex, TMath, gROOT
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -76,7 +77,7 @@ def overlay(graphs, header, addon, runtype,
         #                           hist.GetXaxis().GetXmax()+(3*(ii-3)))
         graph.Draw('ap' if i_graph == 0 else 'psame')
 
-        legname = graph.GetName()
+        legname = graph.GetTitle() or graph.GetName()
         # graph.GetPoint(0, x, y)
         leg.AddEntry(graph, legname, 'lep')
 
@@ -136,6 +137,7 @@ def overlay(graphs, header, addon, runtype,
         comparePerReleaseSuffix + '/all' +
         eta + '/' + header
     )
+    canvas.Close()
 
 
 def hoverlay(hists, xtitle, ytitle,
@@ -171,14 +173,16 @@ def hoverlay(hists, xtitle, ytitle,
 
         if i_hist == 0:
             hist.Draw('h')
-            hist_TAR = hist.Clone()
+            hist_TAR = hist.Clone('ratio_den_' + uuid.uuid4().hex)
+            hist_TAR.SetDirectory(0)
         else:
             hist.Draw('hsame')
             # ihr = hist.Clone()
             # ihr.Sumw2()
             #ihr.Divide(hists[0])
 
-            ihr = hist.Clone()
+            ihr = hist.Clone('ratio_' + uuid.uuid4().hex)
+            ihr.SetDirectory(0)
             ihr.Divide(hist_TAR)
 
             ihr.SetStats(0)
@@ -188,7 +192,7 @@ def hoverlay(hists, xtitle, ytitle,
             ihr.SetMarkerSize(0)
             hratios.append(ihr)
 
-        leg.AddEntry(hist, hist.GetName(), "l")
+        leg.AddEntry(hist, hist.GetTitle() or hist.GetName(), "l")
 
     leg.Draw()
 
@@ -245,6 +249,7 @@ def hoverlay(hists, xtitle, ytitle,
          '/histograms/hist_' +
          name)
     )
+    c.Close()
 
 
 def findLooseId(hname):
@@ -310,21 +315,40 @@ def makeEffPlotsVars(tree,
                      binning,
                      xtitle='', header='', addon='', marker=20, col=1):
 
-    unique_id = addon + '_' + uuid.uuid4().hex
+    # TTree.Draw looks up named histograms in the current ROOT directory.
+    # Keep internal names independent of paths and display labels.
+    gROOT.cd()
+    unique_id = uuid.uuid4().hex
     denom_name = 'h_effp_' + unique_id
     nom_name = 'ah_effp_' + unique_id
+    _denomHist_ = TH1F(denom_name, '', len(binning) - 1, binning)
+    _nominatorHist_ = TH1F(nom_name, '', len(binning) - 1, binning)
+    _denomHist_.SetDirectory(gROOT)
+    _nominatorHist_.SetDirectory(gROOT)
+    try:
+        n_den = tree.Draw(varx + ' >> ' + denom_name, baseSelection, 'goff')
+        n_num = tree.Draw(varx + ' >> ' + nom_name,
+                          '(' + baseSelection + ') && (' + numeratorAddSelection + ')',
+                          'goff')
+        if n_den < 0 or n_num < 0:
+            raise RuntimeError('TTree.Draw failed for {}: {} / {}'.format(
+                header, varx, numeratorAddSelection))
+    finally:
+        _denomHist_.SetDirectory(0)
+        _nominatorHist_.SetDirectory(0)
 
-    _denomHist_ = TH1F(denom_name,
-                       'h_effp' + addon,
-                       len(binning) - 1,
-                       binning)
-    _nominatorHist_ = TH1F(nom_name, 'ah_effp' + addon,
-                           len(binning) - 1,
-                           binning)
-
-    tree.Draw(varx + ' >> ' + denom_name, baseSelection, 'goff')
-    tree.Draw(varx + ' >> ' + nom_name,
-              baseSelection + ' && ' + numeratorAddSelection, 'goff')
+    empty_bins = []
+    for i in range(1, _denomHist_.GetNbinsX() + 1):
+        total = _denomHist_.GetBinContent(i)
+        passed = _nominatorHist_.GetBinContent(i)
+        if total < 0 or passed < 0 or passed > total:
+            raise RuntimeError('Invalid efficiency counts for {} {}, bin {}: '
+                               'pass={}, total={}'.format(header, varx, i, passed, total))
+        if total == 0:
+            empty_bins.append(i)
+    if empty_bins:
+        print('[efficiency] {} {}: empty denominator bins {}'.format(
+            header, varx, empty_bins), flush=True)
 
     g_eff = TGraphAsymmErrors()
     g_eff.Divide(_nominatorHist_, _denomHist_, "cl=0.683 b(1,1) mode")
@@ -332,14 +356,14 @@ def makeEffPlotsVars(tree,
     g_eff.GetYaxis().SetTitle('efficiency')
     g_eff.GetYaxis().SetNdivisions(507)
     g_eff.SetLineWidth(3)
-    g_eff.SetName(header)
+    g_eff.SetName('eff_' + unique_id)
+    g_eff.SetTitle(header)
     g_eff.SetMinimum(0.)
     g_eff.GetYaxis().SetTitleOffset(1.3)
     g_eff.SetMarkerStyle(marker)
     g_eff.SetMarkerSize(2)
     g_eff.SetMarkerColor(col)
     g_eff.SetLineColor(col)
-    g_eff.Draw('ap')
 
     return g_eff
 
@@ -367,11 +391,25 @@ def fillSampledic(globaltags, releases, runtype, inputfiles=None):
 
     if globaltags==[] and inputfiles is not None:
         for index, inputf in enumerate(inputfiles):
-            name = inputf.replace(".root", "")+"_"
-            sampledict[name] = styles[index]
+            name = 'sample_{}'.format(index)
+            sampledict[name] = dict(styles[index % len(styles)])
+            basename = os.path.basename(inputf)
+            geom = re.search(r'(?:^|_)D(\d+)(?:_|$)', basename)
+            role = ('target' if basename.startswith('target_') else
+                    'reference' if basename.startswith('ref_') else
+                    'sample {}'.format(index + 1))
+            release = releases[index] if index < len(releases) else ''
+            label = release.removeprefix('CMSSW_')
+            if geom:
+                label += ' D' + geom.group(1)
+            sampledict[name]['label'] = '{} ({})'.format(label.strip() or basename, role)
 
             sampledict[name]['file'] = TFile(inputfiles[index])
+            if not sampledict[name]['file'] or sampledict[name]['file'].IsZombie():
+                raise RuntimeError('Cannot open input ROOT file for {}'.format(name))
             sampledict[name]['tree'] = sampledict[name]['file'].Get('per_tau')
+            if not sampledict[name]['tree']:
+                raise RuntimeError('Missing per_tau tree for {}'.format(name))
 
             # adding the index such that we can sort the dictionary later to have correct ratio plots
             sampledict[name]['index'] = index
@@ -387,7 +425,11 @@ def fillSampledic(globaltags, releases, runtype, inputfiles=None):
                     runtype))
             else:
                 sampledict[name]['file'] = TFile(inputfiles[index])
+            if not sampledict[name]['file'] or sampledict[name]['file'].IsZombie():
+                raise RuntimeError('Cannot open input ROOT file for {}'.format(name))
             sampledict[name]['tree'] = sampledict[name]['file'].Get('per_tau')
+            if not sampledict[name]['tree']:
+                raise RuntimeError('Missing per_tau tree for {}'.format(name))
 
             # adding the index such that we can sort the dictionary later to have correct ratio plots
             sampledict[name]['index'] = index

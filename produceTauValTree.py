@@ -12,10 +12,41 @@ import subprocess
 from time import time
 from datetime import datetime, timedelta
 
+'''Changes'''
 import ROOT
 import argparse  # needs to come after ROOT import
 
+ROOT.PyConfig.IgnoreCommandLineOptions = True
+ROOT.gROOT.SetBatch(True)
+
+if ROOT.gSystem.Load("libFWCoreFWLite.so") < 0:
+    raise RuntimeError("Cannot load libFWCoreFWLite.so")
+
+ROOT.FWLiteEnabler.enable()
+
+for library in (
+    "libDataFormatsFWLite.so",
+    "libDataFormatsPatCandidates.so",
+    "libSimDataFormatsPileupSummaryInfo.so",
+):
+    if ROOT.gSystem.Load(library) < 0:
+        raise RuntimeError(f"Cannot load {library}")
+
 from DataFormats.FWLite import Events, Handle
+
+for variable in ("CMSSW_BASE", "CMSSW_RELEASE_BASE"):
+    base = os.environ.get(variable)
+    if base:
+        ROOT.gInterpreter.AddIncludePath(os.path.join(base, "src"))
+
+if not ROOT.gInterpreter.Declare("""
+#include <vector>
+#include "DataFormats/Common/interface/Wrapper.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+"""):
+    raise RuntimeError("Failed to declare FWLite pileup headers")
+
+'''Changes'''
 from PhysicsTools.HeppyCore.utils.deltar import deltaR, bestMatch, deltaR2
 from PhysicsTools.Heppy.physicsutils.TauDecayModes import tauDecayModes
 from Var import Var
@@ -27,8 +58,6 @@ from relValTools import addArguments, getFilesFromEOS, \
     getFilesFromDAS, getNeventsFromDAS, is_above_cmssw_version, \
     runtype_to_sample, dprint
 
-ROOT.PyConfig.IgnoreCommandLineOptions = True
-ROOT.gROOT.SetBatch(True)
 
 data_run_types = ['Data', 'DataTau', 'DataMu', 'DataEl']
 tau_run_types = ['DYToLL', 'ZTT', 'ZpTT', 'TTbarTau', 'TenTaus']
@@ -321,14 +350,14 @@ if __name__ == '__main__':
 
     NMatchedTaus = 0
 
-    tauH = Handle('vector<pat::Tau>')
+    tauH = Handle('std::vector<pat::Tau>')
     vertexH = Handle('std::vector<reco::Vertex>')
     genParticlesH = Handle('std::vector<reco::GenParticle>')
-    jetH = Handle('vector<pat::Jet>')
-    genJetH = Handle('vector<reco::GenJet>')
+    jetH = Handle('std::vector<pat::Jet>')
+    genJetH = Handle('std::vector<reco::GenJet>')
     puH = Handle('std::vector<PileupSummaryInfo>')
-    candH = Handle('vector<pat::PackedCandidate>')
-    lostH = Handle('vector<pat::PackedCandidate>')
+    candH = Handle('std::vector<pat::PackedCandidate>')
+    lostH = Handle('std::vector<pat::PackedCandidate>')
 
     start = time()
     for event in events:

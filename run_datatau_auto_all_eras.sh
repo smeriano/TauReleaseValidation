@@ -14,8 +14,8 @@ set -uo pipefail
 #   compare.py --runtype DataTau
 # ============================================================
 
-TARGET_REL="CMSSW_16_1_0_pre3"
-REF_REL="CMSSW_16_1_0_pre2"
+TARGET_REL="CMSSW_17_0_0_pre3"
+REF_REL="CMSSW_17_0_0_pre2"
 
 # ============================================================
 # GlobalTags split by data-taking year
@@ -24,8 +24,8 @@ REF_REL="CMSSW_16_1_0_pre2"
 TARGET_GT_2024=""
 REF_GT_2024=""
 
-TARGET_GT_2025="160X_dataRun3_Prompt_frozen260223_v1"
-REF_GT_2025="150X_dataRun3_HLT_frozen250613_v1"
+TARGET_GT_2025="161X_dataRun3_Prompt_frozen260520_v1"
+REF_GT_2025="161X_dataRun3_Prompt_frozen260520_v1"
 
 # These are assigned for each ERA inside the main loop.
 TARGET_GT=""
