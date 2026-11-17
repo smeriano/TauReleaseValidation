@@ -112,31 +112,17 @@ def overlay(graphs, header, addon, runtype,
     tex2.SetTextSize(0.035)
     tex2.Draw()
 
-    eta = '_eta' if '_eta' in header else ''
+    # Determine if this is an eta plot or a pt plot
+    folder_ext = '_eta' if '_eta' in header else '_pt'
 
-    dir_name = header.split('_')[0]
-    save(
-        canvas,
-        'compare_' + runtype + comparePerReleaseSuffix +
-        '/' + dir_name + eta + '/' + header
-    )
-
-    try:
-        directory2 = dir_translator[header.split('_')[1]]
-        save(
-            canvas,
-            'compare_' + runtype + comparePerReleaseSuffix +
-            '/' + directory2 + eta + '/' + header
-        )
-    except (IndexError, KeyError):
-        pass
-
+    # Save ONLY to the all_pt or all_eta directories
     save(
         canvas,
         'compare_' + runtype +
         comparePerReleaseSuffix + '/all' +
-        eta + '/' + header
+        folder_ext + '/' + header
     )
+    
     canvas.Close()
 
 
@@ -395,9 +381,7 @@ def fillSampledic(globaltags, releases, runtype, inputfiles=None):
             sampledict[name] = dict(styles[index % len(styles)])
             basename = os.path.basename(inputf)
             geom = re.search(r'(?:^|_)D(\d+)(?:_|$)', basename)
-            role = ('target' if basename.startswith('target_') else
-                    'reference' if basename.startswith('ref_') else
-                    'sample {}'.format(index + 1))
+            role = 'target' if index == 0 else 'reference'
             release = releases[index] if index < len(releases) else ''
             label = release.removeprefix('CMSSW_')
             if geom:
