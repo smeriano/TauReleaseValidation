@@ -14,8 +14,8 @@ set -uo pipefail
 #   compare.py --runtype DataTau
 # ============================================================
 
-TARGET_REL="CMSSW_17_0_0_pre3"
-REF_REL="CMSSW_17_0_0_pre2"
+TARGET_REL="CMSSW_17_0_0"
+REF_REL="CMSSW_17_0_0_pre7"
 
 # ============================================================
 # GlobalTags split by data-taking year
@@ -72,6 +72,18 @@ TAR_DIR="${BASE}/tars"
 
 FORCE="${FORCE:-0}"
 DRY_RUN="${DRY_RUN:-0}"
+
+# Opt in to exploratory comparisons using unequal run/lumisection coverage.
+# Example: ALLOW_LUMI_MISMATCH=1 DRY_RUN=0 bash run_datatau_auto_all_eras.sh 2025D
+ALLOW_LUMI_MISMATCH="${ALLOW_LUMI_MISMATCH:-0}"
+case "${ALLOW_LUMI_MISMATCH}" in
+  0|1) ;;
+  *)
+    echo "ERROR: ALLOW_LUMI_MISMATCH must be 0 or 1." >&2
+    exit 2
+    ;;
+esac
+
 
 mkdir -p "${ROOT_DIR}" "${MCROOT_DIR}" "${PLOT_DIR}" "${LOG_DIR}" "${TAR_DIR}"
 
@@ -542,11 +554,12 @@ run_compare () {
 }
 
 STATUS="${BASE}/status_DataTau.tsv"
-echo -e "era\tstatus\ttarget_dataset\tref_dataset\ttarget_root\tref_root\tplots" > "${STATUS}"
+echo -e "era\tstatus\ttarget_dataset\tref_dataset\ttarget_root\tref_root\tplots\tlumi_match" > "${STATUS}"
 
 for ERA in "${ERAS[@]}"; do
+  LUMI_STATUS="NOT_CHECKED"
   if ! set_globaltags_for_era "${ERA}"; then
-    echo -e "${ERA}\tFAILED_GT_CONFIGURATION\t\t\t\t\t" >> "${STATUS}"
+    echo -e "${ERA}\tFAILED_GT_CONFIGURATION\t\t\t\t\t\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
@@ -565,7 +578,7 @@ for ERA in "${ERAS[@]}"; do
 
   if [[ "${rc_target_pick}" -ne 0 || "${rc_ref_pick}" -ne 0 || "${#TARGET_CANDS[@]}" -eq 0 || "${#REF_CANDS[@]}" -eq 0 ]]; then
     echo "ERROR: dataset discovery failed for ${ERA}"
-    echo -e "${ERA}\tFAILED_DISCOVERY\t\t\t\t\t" >> "${STATUS}"
+    echo -e "${ERA}\tFAILED_DISCOVERY\t\t\t\t\t\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
@@ -590,11 +603,17 @@ for ERA in "${ERAS[@]}"; do
 
     if datasets_lumi_match "${DRY_TARGET_DS}" "${DRY_REF_DS}"; then
       DRY_STATUS="DRY_RUN_LUMI_MATCH"
+      LUMI_STATUS="MATCH"
     else
       DRY_STATUS="DRY_RUN_LUMI_MISMATCH"
+      LUMI_STATUS="MISMATCH"
+      if [[ "${ALLOW_LUMI_MISMATCH}" == "1" ]]; then
+        LUMI_STATUS="MISMATCH_ALLOWED"
+        echo "[dry-run] Production would proceed with unequal coverage."
+      fi
     fi
 
-    echo -e "${ERA}\t${DRY_STATUS}\t${DRY_TARGET_DS}\t${DRY_REF_DS}\t\t\t" >> "${STATUS}"
+    echo -e "${ERA}\t${DRY_STATUS}\t${DRY_TARGET_DS}\t${DRY_REF_DS}\t\t\t\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
@@ -611,7 +630,7 @@ for ERA in "${ERAS[@]}"; do
 
   if [[ "${ok_target}" -ne 0 ]]; then
     echo "ERROR: target production failed for ${ERA}"
-    echo -e "${ERA}\tFAILED_TARGET_PRODUCTION\t${TARGET_DS:-}\t\t${ORIG_TARGET}\t${ORIG_REF}\t" >> "${STATUS}"
+    echo -e "${ERA}\tFAILED_TARGET_PRODUCTION\t${TARGET_DS:-}\t\t${ORIG_TARGET}\t${ORIG_REF}\t\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
@@ -633,16 +652,23 @@ for ERA in "${ERAS[@]}"; do
 
   if [[ "${ok_target}" -ne 0 || "${ok_ref}" -ne 0 ]]; then
     echo "ERROR: production failed for ${ERA}"
-    echo -e "${ERA}\tFAILED_PRODUCTION\t${TARGET_DS:-}\t${REF_DS:-}\t${ORIG_TARGET}\t${ORIG_REF}\t" >> "${STATUS}"
+    echo -e "${ERA}\tFAILED_PRODUCTION\t${TARGET_DS:-}\t${REF_DS:-}\t${ORIG_TARGET}\t${ORIG_REF}\t\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
+  LUMI_STATUS="MATCH"
   if ! datasets_lumi_match "${TARGET_DS}" "${REF_DS}"; then
-    echo "ERROR: chosen target/reference lumi sets do not match for ${ERA}"
+    echo "WARNING: chosen target/reference lumi sets do not match for ${ERA}"
     echo "  TARGET: ${TARGET_DS}"
     echo "  REF:    ${REF_DS}"
-    echo -e "${ERA}\tFAILED_LUMI_MISMATCH\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t" >> "${STATUS}"
-    continue
+    LUMI_STATUS="MISMATCH"
+    if [[ "${ALLOW_LUMI_MISMATCH}" != "1" ]]; then
+      echo "ERROR: stopping this era; set ALLOW_LUMI_MISMATCH=1 to proceed."
+      echo -e "${ERA}\tFAILED_LUMI_MISMATCH\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t\t${LUMI_STATUS}" >> "${STATUS}"
+      continue
+    fi
+    LUMI_STATUS="MISMATCH_ALLOWED"
+    echo "WARNING: proceeding with unequal coverage (ALLOW_LUMI_MISMATCH=1)."
   fi
 
   echo
@@ -660,7 +686,7 @@ for ERA in "${ERAS[@]}"; do
 
   if [[ "${ok_conv_target}" -ne 0 || "${ok_conv_ref}" -ne 0 ]]; then
     echo "ERROR: conversion failed for ${ERA}"
-    echo -e "${ERA}\tFAILED_CONVERSION\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t" >> "${STATUS}"
+    echo -e "${ERA}\tFAILED_CONVERSION\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
@@ -670,11 +696,11 @@ for ERA in "${ERAS[@]}"; do
   ok_compare=$?
 
   if [[ "${ok_compare}" -ne 0 ]]; then
-    echo -e "${ERA}\tFAILED_COMPARE\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t${OUTDIR}" >> "${STATUS}"
+    echo -e "${ERA}\tFAILED_COMPARE\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t${OUTDIR}\t${LUMI_STATUS}" >> "${STATUS}"
     continue
   fi
 
-  echo -e "${ERA}\tOK\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t${OUTDIR}" >> "${STATUS}"
+  echo -e "${ERA}\tOK\t${TARGET_DS}\t${REF_DS}\t${ORIG_TARGET}\t${ORIG_REF}\t${OUTDIR}\t${LUMI_STATUS}" >> "${STATUS}"
 done
 
 echo
